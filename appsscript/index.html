@@ -6,7 +6,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <base target="_top">
- <!-- Custom CSS -->
   <style>@charset "UTF-8";
 /*!
  * Bootstrap v5.0.0-alpha2 (https://getbootstrap.com/)
@@ -10270,11 +10269,19 @@ progress {
     display: none !important;
   }
 }
-.front-page-example-background {
-  background-color: beige;
+main {
+  padding-top: 60px;
+}
+
+#loadingSpinner {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 2000;
+  margin-right: 5%;
+  margin-bottom: 5%;
 }</style>
- 
-  <title>Home Page</title>
+  <title>Sign Up</title>
 <style>@charset "UTF-8";
 /*!
  * Bootstrap v5.0.0-alpha2 (https://getbootstrap.com/)
@@ -20538,55 +20545,88 @@ progress {
     display: none !important;
   }
 }
-.front-page-example-background {
-  background-color: beige;
+main {
+  padding-top: 60px;
+}
+
+#loadingSpinner {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 2000;
+  margin-right: 5%;
+  margin-bottom: 5%;
 }</style></head>
 
-<body class="d-flex flex-column h-100 front-page-example-background">
+<body class="d-flex flex-column h-100">
   <header>
-    <!-- Fixed navbar -->
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      <div class="container-fluid">
-        <a class="navbar-brand">Logo</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul class="navbar-nav mr-auto mb-2 mb-md-0">
-            <li class="nav-item active">
-              <a class="nav-link" aria-current="page">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link">Link</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link disabled" tabindex="-1" aria-disabled="true">Disabled</a>
-            </li>
-          </ul>
-          <form class="d-flex">
-            <button class="btn btn-outline-success" type="button">Login</button>
-          </form>
-        </div>
+    <nav class="navbar navbar-expand-sm navbar navbar-dark bg-primary">
+      <a class="navbar-brand ml-3" href="">SIS</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="">Sign up</a>
+          </li>
+        </ul>
+        <span class="badge rounded-pill bg-light text-dark mr-3" id="signedInName">login</span>
       </div>
     </nav>
   </header>
-
-  <main class="flex-shrink-0" style="padding-top:60px;">
+  <main class="flex-shrink-0">
     <div class="container">
-      <h1 class="mt-5">Hello, world!</h1>
-      <p>This is a web starter for appScript on V8</p>
-      <p>It uses Bootstrap 5.0.0-alpha1 </p>
-      <p>And Parcel for deployment.</p>
-      <p id="jsLoaded"></p>
+      <div class="alert alert-dark show" id="clubAlertNotice" role="alert">
+        <strong>Welcome</strong> to the club form page!
+      </div>
+      <div id="loadingSpinner" class="d-flex justify-content-center text-primary">
+        <div class="spinner-grow" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+      <h1>Signup</h1>
+      <!-- Signup Form -->
+
+      <form>
+        <div class="form-row">
+          <div class="col-3">
+            <select class="form-select" id="clubChoice" aria-label="Choose a club">
+            </select>
+            <small id="clubHelp" class="form-text text-muted">Please choose a club.</small>
+          </div>
+        </div>
+        <div class="mt-3">
+          <button class="btn btn-primary" id="submitBtnLoader" type="button" disabled="">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <span class="sr-only">Loading...</span>
+          </button>
+          <button type="button" class="btn btn-primary" id="clubAppBtn">
+            Apply
+          </button>
+        </div>
+
+      </form>
+      <!-- Club list, and current numbers  -->
+      <div>
+        <h3 class="mt-3">Clubs</h3>
+        <table class="table table-striped table-hover table-bordered border-primary table-sm mt-3 table-striped">
+          <thead id="club-table-head" class="bg-primary text-light">
+            <tr>
+              <th scope="col">Club Name</th>
+              <th scope="col">Enrolled</th>
+              <th scope="col">Capacity</th>
+              <th scope="col">Moderator</th>
+              <th scope="col">Description</th>
+            </tr>
+          </thead>
+          <tbody id="club-table-body">
+          </tbody>
+        </table>
+      </div>
     </div>
   </main>
-
-  <footer class="footer fixed-bottom mt-auto py-3 bg-dark text-white">
-    <div class="container">
-      <span>Here is your Sticky Footer</span>
-    </div>
-  </footer>
-  <!-- Custom JavaScript -->
   <script>// modules are defined as an array
 // [ module function, map of requires ]
 //
@@ -28374,18 +28414,136 @@ require("bootstrap");
 
 require("../scss/main.scss");
 
-// parceljs recipe https://parceljs.org/recipes.html
-// mdn https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event
-function sayHello() {
-  document.getElementById("jsLoaded").innerText = "Updated";
+// display users' name
+google.script.run.withSuccessHandler(showUserName).getUserName();
+
+function showUserName(userName) {
+  var userSchoolNotice = document.getElementById('signedInName');
+  userSchoolNotice.innerHTML = userName;
 }
 
-if (document.readyState === 'loading') {
-  // Loading hasn't finished yet
-  document.addEventListener('DOMContentLoaded', sayHello);
-} else {
-  // `DOMContentLoaded` has already fired
-  sayHello();
+document.addEventListener('DOMContentLoaded', function (event) {
+  // run the alert mesage
+  google.script.run.withSuccessHandler(isAlreadyEnrolled).getUserClub(); // create dropdown with the available clubs
+
+  google.script.run.withSuccessHandler(showClubOptions).getClubListBySchool(); // create club table
+
+  google.script.run.withSuccessHandler(showClubTable).getClubData();
+  document.getElementById('clubAppBtn').addEventListener('click', submitClubApplication);
+});
+var isEnrolled = false; //submitting the application
+
+function showLoader() {
+  document.getElementById("loadingSpinner").classList.remove("invisible");
+  document.getElementById("submitBtnLoader").classList.remove("invisible");
+}
+
+function removeLoader() {
+  document.getElementById("loadingSpinner").classList.add("invisible");
+  document.getElementById("submitBtnLoader").classList.add("invisible");
+}
+
+function isAlreadyEnrolled(isInClub) {
+  var clubFormStatus = document.getElementById('clubAlertNotice');
+  var classList = clubFormStatus.classList;
+
+  while (classList.length > 0) {
+    classList.remove(classList.item(0));
+  }
+
+  if (isInClub) {
+    clubFormStatus.innerHTML = 'You are already enrolled in ' + isInClub;
+    clubFormStatus.classList.add('alert', 'alert-primary', 'show');
+    isEnrolled = true;
+  } else {
+    clubFormStatus.innerHTML = 'Please choose a club from the dropdown.';
+    clubFormStatus.classList.add('alert', 'alert-warning', 'show');
+    isEnrolled = false;
+  }
+}
+
+function clubEnrollmentMessage(clubName) {
+  var clubFormStatus = document.getElementById('clubAlertNotice');
+  var classList = clubFormStatus.classList;
+
+  while (classList.length > 0) {
+    classList.remove(classList.item(0));
+  }
+
+  if (clubName) {
+    clubFormStatus.innerHTML = 'Welcome to the ' + clubName + ' club';
+    clubFormStatus.classList.add('alert', 'alert-success', 'show');
+  } else {
+    clubFormStatus.innerHTML = 'Sorry, your choice is already full, please select another option.';
+    clubFormStatus.classList.add('alert', 'alert-danger', 'show');
+  }
+}
+
+function showUserName(userName) {
+  var userSchoolNotice = document.getElementById('signedInName');
+  userSchoolNotice.innerHTML = userName;
+}
+
+function showStudentSchool() {
+  var userName = document.getElementById('studentSchool');
+  userSchoolNotice.innerHTML = google.script.run.getStudentSchool();
+}
+
+function clearClubTable() {
+  var clubTableBody = document.getElementById('club-table-body');
+
+  while (clubTableBody.rows.length > 0) {
+    clubTableBody.deleteRow(0);
+  }
+}
+
+function submitClubApplication() {
+  var clubFormStatus = document.getElementById('clubAlertNotice');
+  console.log('Enrolled status is; ' + isEnrolled);
+
+  if (isEnrolled) {
+    console.log('Not Processing');
+    clubFormStatus.innerHTML = 'You are already enrolled in a club';
+    clubFormStatus.classList.add('alert', 'alert-warning', 'show');
+  } else {
+    var clubName = document.getElementById("clubChoice").value;
+    showLoader();
+    google.script.run.withSuccessHandler(clubEnrollmentMessage).setRecordClubEntry(clubName);
+    clearClubTable();
+    updateClubData();
+    isEnrolled = true;
+  }
+} // app script returns the stale copy of the sheet values, so adding this new function....
+
+
+function updateClubData() {
+  google.script.run.withSuccessHandler(showClubTable).getClubData();
+}
+
+function showClubTable(clubResults) {
+  var clubTableBody = document.getElementById('club-table-body');
+
+  for (var r = 0; r < clubResults.length; r++) {
+    var row = clubTableBody.insertRow();
+
+    for (var c = 1; c < clubResults[r].length - 1; c++) {
+      var cell = row.insertCell();
+      var text = document.createTextNode(clubResults[r][c]);
+      cell.appendChild(text);
+    }
+  }
+
+  removeLoader();
+}
+
+function showClubOptions(optionsList) {
+  var clubListOptions = document.getElementById('clubChoice');
+
+  for (var i = 0; i < optionsList.length; i++) {
+    var option = document.createElement("option");
+    option.text = optionsList[i];
+    clubListOptions.add(option);
+  }
 }
 },{"bootstrap":"xqrD","../scss/main.scss":"fx60"}]},{},["d6sW"], null)</script>
 </body>

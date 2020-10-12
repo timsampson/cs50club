@@ -13,7 +13,7 @@
 <body class="d-flex flex-column h-100">
   <header>
     <nav class="navbar navbar-expand-sm navbar navbar-dark bg-primary">
-      <a class="navbar-brand ml-3" href="<?= ScriptApp.getService().getUrl(); ?>">SIS</a>
+      <a class="navbar-brand ml-3" href="">SIS</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -22,7 +22,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link" href="<?= ScriptApp.getService().getUrl(); ?>?v=signup">Sign up</a>
+            <a class="nav-link" href="">Sign up</a>
           </li>
         </ul>
         <span class="badge rounded-pill bg-light text-dark mr-3" id="signedInName">login</span>
@@ -80,10 +80,7 @@
       </div>
     </div>
   </main>
-  <?!= include("app-js.html") ?>
-  <?!= include("signup-js.html") ?>
-
-
+  <script src="js/main.js"></script>
 </body>
 
 </html>

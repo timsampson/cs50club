@@ -20560,8 +20560,8 @@ main {
 
 <body class="d-flex flex-column h-100">
   <header>
-    <nav class="navbar navbar-expand-sm navbar navbar-dark bg-primary">
-      <a class="navbar-brand ml-3" id="sign-up-brand" href="">SIS</a>
+    <nav id="main-nav" class="navbar navbar-expand-sm navbar navbar-dark bg-primary invisible">
+      <a class="navbar-brand ml-3" id="sign-up-brand" href="#0">SIS</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -20569,7 +20569,7 @@ main {
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link" id="sign-up-link" href="#">Sign up</a>
+            <a class="nav-link hidd" id="sign-up-link" href="#">Sign up</a>
           </li>
         </ul>
         <span class="badge rounded-pill bg-light text-dark mr-3" id="signedInName">login</span>
@@ -28436,6 +28436,7 @@ function showUserName(userName) {
 function updateNavIndex(baseURL) {
   document.getElementById('sign-up-link').href = baseURL + '/index';
   document.getElementById('sign-up-brand').href = baseURL;
+  document.getElementById("main-nav").classList.remove("invisible");
 }
 
 function showLoader() {

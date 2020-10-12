@@ -26,6 +26,7 @@ function showUserName(userName) {
 function updateNavIndex(baseURL) {
   document.getElementById('sign-up-link').href = baseURL + '/index';
   document.getElementById('sign-up-brand').href = baseURL;
+  document.getElementById("main-nav").classList.remove("invisible");
 }
 
 function showLoader() {

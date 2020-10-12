@@ -4,7 +4,7 @@
   "description": "Google Apps Script Web Site Template with Bootstrap and Parcel for build and deploy.",
   "main": "build/index.html",
   "scripts": {
-    "bld": "parcel build client/index.html --no-minify --no-source-maps  --no-cache && node util.js && clasp push"
+    "bld": "node clean.js && parcel build client/index.html --no-minify --no-source-maps  --no-cache  && node util.js && clasp push"
   },
   "devDependencies": {
     "@types/google-apps-script": "1.0.14",

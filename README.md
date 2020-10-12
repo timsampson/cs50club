@@ -18,7 +18,7 @@ Next install Parcel, Parcel Bundler and the plugin to inline: `npm install --glo
 
 Once it is setup, run your build with `npx parcel build client/index.html --no-minify --no-source-maps --no-cache`.  I used the live server extension to test if the styling and javascript worked as expected. 
 
-To push your deploy, use the command `npm run build`
+To push your deploy, use the command `npm run bld`
 
 Before you can view your webapp, you need an  initial deploy. One way is to run `clasp deploy --description "Initial Deploy"`, or you can change the description to anything you see fit.  You can also do this from the Apps Script dashboard, `clasp open` will get you to your project on the dashboard and from there you can use the menu options.
 

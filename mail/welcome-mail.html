@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome Email</title>
+    <style>
+        body {
+            max-width: 680px;
+        }
+
+        * {
+            box-sizing: border-box;
+            background-color: aliceblue;
+        }
+
+        .img-container {
+            float: left;
+            width: 33.33%;
+            padding: 10px;
+            padding-bottom: 10px;
+        }
+
+        img {
+            border-radius: 10%;
+        }
+
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+
+        p {
+            border: 2px;
+            padding: 1rem;
+            margin-bottom: 16px;
+            border: 2px;
+            padding: 1rem;
+            border-left-style: solid;
+            border-left-color: blue;
+            border-left-width: 4px;
+            border-radius: 10px;
+        }
+
+        .container {
+            padding: 30px;
+        }
+    </style>
+
+</head>
+
+<body
+    style=" padding: 2px; margin: 10px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 16px; max-width: 680px;">
+    <div class="container">
+        <row>
+            <h2 style="text-align: left; font-size: 20px; margin: 0;">Dear <?= stuName ?></h2>
+            <h4>Congratulations, you have joined the <?= clubName ?> Club.</h4>
+            <p>
+                In <?= clubName ?> club, you will have a lot of fun. <?= clubDetails ?>
+            </p>
+        </row>
+        <table style="width:100%">
+            <tr>
+                <td class="img-container">
+                    <img src="https://images.pexels.com/photos/278918/pexels-photo-278918.jpeg?auto=compress&cs=tinysrgb&h=650&w=9400"
+                        alt="Board Game, Pixabay.com" style="width:100%" />
+                </td>
+                <td class="img-container">
+                    <img src="https://images.pexels.com/photos/277124/pexels-photo-277124.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260"
+                        alt="Chess Game, Pexels.com ~ Ylanite Koppens" style="width:100%" />
+                </td>
+                <td class="img-container">
+                    <img src="https://images.pexels.com/photos/47730/the-ball-stadion-football-the-pitch-47730.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260"
+                        alt="Soccer game, Pixabay.com" style="width:100%" />
+                </td>
+            </tr>
+        </table>
+        <div style="padding-top: 10px;">
+            <p>We hope you have a great school year with us!</p>
+        </div>
+        <h4>See you soon,</h4>
+        <h4>Your Club Leader, <?= clubModerator ?></h4>
+    </div>
+</body>
+
+</html>

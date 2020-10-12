@@ -1,31 +1,38 @@
 import 'bootstrap'
 import '../scss/main.scss'
 
-// display users' name
-google.script.run.withSuccessHandler(showUserName).getUserName();
-function showUserName(userName) {
-  let userSchoolNotice = document.getElementById('signedInName');
-  userSchoolNotice.innerHTML = userName;
-}
-
 document.addEventListener('DOMContentLoaded', (event) => {
+  // display users' name
+  google.script.run.withSuccessHandler(showUserName).getUserName();
   // run the alert mesage
   google.script.run.withSuccessHandler(isAlreadyEnrolled).getUserClub();
   // create dropdown with the available clubs
   google.script.run.withSuccessHandler(showClubOptions).getClubListBySchool();
   // create club table
   google.script.run.withSuccessHandler(showClubTable).getClubData();
+  google.script.run.withSuccessHandler(updateNavIndex).getScriptURL();
   document
     .getElementById('clubAppBtn')
     .addEventListener('click', submitClubApplication);
 });
+
 let isEnrolled = false;
 //submitting the application
+function showUserName(userName) {
+  let userSchoolNotice = document.getElementById('signedInName');
+  userSchoolNotice.innerHTML = userName;
+}
+
+function updateNavIndex(baseURL) {
+  document.getElementById('sign-up-link').href = baseURL + '/index';
+  document.getElementById('sign-up-brand').href = baseURL;
+}
 
 function showLoader() {
   document.getElementById("loadingSpinner").classList.remove("invisible");
   document.getElementById("submitBtnLoader").classList.remove("invisible");
 }
+
 function removeLoader() {
   document.getElementById("loadingSpinner").classList.add("invisible");
   document.getElementById("submitBtnLoader").classList.add("invisible");

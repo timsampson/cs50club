@@ -1,12 +1,3 @@
-function doGet(event) {
-    return HtmlService.createTemplateFromFile("signup").evaluate();
-}
-function include(filename) {
-    return HtmlService.createHtmlOutputFromFile(filename).getContent();
-}
-function isTeacher() {
-    return ((staffValues.findIndex(r => r[1] === getEmail()) > 0));
-}
 let db = SpreadsheetApp.openById("1Uf02C1mBDxwkyKPfLvmVPa1IAWIAdiw5uVDYIQvG_cg");
 let clubEnrollmentSheet = db.getSheetByName("clubrecord");
 let staffSheet = db.getSheetByName("staff");
@@ -16,6 +7,20 @@ let staffValues = staffSheet.getDataRange().getValues();
 let clubEnrollmentValues = clubEnrollmentSheet.getDataRange().getValues();
 let studentValues = studentSheet.getDataRange().getValues();
 let clubValues = clubSheet.getDataRange().getValues();
+
+function doGet(event) {
+    return HtmlService.createTemplateFromFile("index").evaluate();
+}
+function include(filename) {
+    return HtmlService.createHtmlOutputFromFile(filename).getContent();
+}
+function isTeacher() {
+    return ((staffValues.findIndex(r => r[1] === getEmail()) > 0));
+}
+
+function getScriptURL() {
+    return ScriptApp.getService().getUrl();
+}
 
 function getEmail() {
     return Session.getActiveUser().getEmail();

@@ -20561,7 +20561,7 @@ main {
 <body class="d-flex flex-column h-100">
   <header>
     <nav class="navbar navbar-expand-sm navbar navbar-dark bg-primary">
-      <a class="navbar-brand ml-3" href="">SIS</a>
+      <a class="navbar-brand ml-3" id="sign-up-brand" href="">SIS</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -20569,7 +20569,7 @@ main {
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link" href="">Sign up</a>
+            <a class="nav-link" id="sign-up-link" href="#">Sign up</a>
           </li>
         </ul>
         <span class="badge rounded-pill bg-light text-dark mr-3" id="signedInName">login</span>
@@ -20583,7 +20583,7 @@ main {
       </div>
       <div id="loadingSpinner" class="d-flex justify-content-center text-primary">
         <div class="spinner-grow" role="status">
-          <span class="sr-only">Loading...</span>
+          <span class="sr-only"></span>
         </div>
       </div>
       <h1>Signup</h1>
@@ -20598,12 +20598,12 @@ main {
           </div>
         </div>
         <div class="mt-3">
-          <button class="btn btn-primary" id="submitBtnLoader" type="button" disabled="">
-            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            <span class="sr-only">Loading...</span>
-          </button>
           <button type="button" class="btn btn-primary" id="clubAppBtn">
             Apply
+          </button>
+          <button class="btn btn-primary" id="submitBtnLoader" type="button" disabled="">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <span class="sr-only"></span>
           </button>
         </div>
 
@@ -28414,24 +28414,29 @@ require("bootstrap");
 
 require("../scss/main.scss");
 
-// display users' name
-google.script.run.withSuccessHandler(showUserName).getUserName();
+document.addEventListener('DOMContentLoaded', function (event) {
+  // display users' name
+  google.script.run.withSuccessHandler(showUserName).getUserName(); // run the alert mesage
+
+  google.script.run.withSuccessHandler(isAlreadyEnrolled).getUserClub(); // create dropdown with the available clubs
+
+  google.script.run.withSuccessHandler(showClubOptions).getClubListBySchool(); // create club table
+
+  google.script.run.withSuccessHandler(showClubTable).getClubData();
+  google.script.run.withSuccessHandler(updateNavIndex).getScriptURL();
+  document.getElementById('clubAppBtn').addEventListener('click', submitClubApplication);
+});
+var isEnrolled = false; //submitting the application
 
 function showUserName(userName) {
   var userSchoolNotice = document.getElementById('signedInName');
   userSchoolNotice.innerHTML = userName;
 }
 
-document.addEventListener('DOMContentLoaded', function (event) {
-  // run the alert mesage
-  google.script.run.withSuccessHandler(isAlreadyEnrolled).getUserClub(); // create dropdown with the available clubs
-
-  google.script.run.withSuccessHandler(showClubOptions).getClubListBySchool(); // create club table
-
-  google.script.run.withSuccessHandler(showClubTable).getClubData();
-  document.getElementById('clubAppBtn').addEventListener('click', submitClubApplication);
-});
-var isEnrolled = false; //submitting the application
+function updateNavIndex(baseURL) {
+  document.getElementById('sign-up-link').href = baseURL + '/index';
+  document.getElementById('sign-up-brand').href = baseURL;
+}
 
 function showLoader() {
   document.getElementById("loadingSpinner").classList.remove("invisible");

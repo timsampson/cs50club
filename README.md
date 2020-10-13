@@ -1,16 +1,17 @@
-# Apps Script Template with Bootstrap 5 and Parcel [![clasp](https://img.shields.io/badge/built%20with-clasp-4285f4.svg)](https://github.com/google/clasp)
+# CS50 Project Submission
+## Apps Script Template with Bootstrap 5 and Parcel [![clasp](https://img.shields.io/badge/built%20with-clasp-4285f4.svg)](https://github.com/google/clasp)
 
-[Example Site URL](https://script.google.com/macros/s/AKfycbwZdZj7GoKXU2gEzTmdwt1DCLDouSG2FxNN_eu8b5K9AyWkadxY/exec)
+[Example Site URL](https://script.google.com/a/macros/dishs.tp.edu.tw/s/AKfycbx26XCqju00NoeCmM4PgLhlsLd-Ft0J1Jy202AvESlQoU3ryPM/exec)
 
-This is a starter project for web app which uses Clasp and Parcel to deploy modern Javascript to Google's Apps Script (GAS) projects V8 engine. 
+This is my CS50 project submission which uses Google Sheets as a database, and Clasp and Parcel for deploying modern Javascript to Google's Apps Script (GAS) projects V8 engine. 
 
 ### Get Started
 
 Clone the repo, run `npm install`, install Clasp globally `npm install @google/clasp -g` and if prompted for a dependency, inquirer@^6.0.0,  run `npm install inquirer@^6.0.0 -g`. 
 
-Log in to clasp `clasp login --no-localhost`
+If you are using Codespaces, Log in to clasp `clasp login --no-localhost`, othewise you can use `clasp login` at the terminal.
 
-Create an web app: `clasp create --type webapp  --title "Your Title" --rootDir ./appsscript`
+Delete the existing .clasp.json file and then create your starter web app: `clasp create --type webapp  --title "Your Title" --rootDir ./appsscript`
 
 Next install Parcel, Parcel Bundler and the plugin to inline: `npm install --global parcel parcel-bundler parcel-plugin-inliner`.
 

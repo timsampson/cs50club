@@ -27,8 +27,5 @@
   "author": "Tim Sampson",
   "license": "MIT",
   "repository": "https://github.com/timsampson/appScriptV8parcel",
-  "private": true,
-  "dependencies": {
-    "parcel-plugin-inliner": "^1.0.14"
-  }
+  "private": true
 }

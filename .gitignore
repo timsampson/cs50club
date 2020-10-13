@@ -14,5 +14,6 @@ package-lock.json # use yarn.lock
 .cache/
 development
 dist/
+!dist/.keep
 .parcel-cache
 build/

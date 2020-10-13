@@ -23,7 +23,7 @@ Before you can view your webapp, you need an  initial deploy. One way is to run 
 
 ### Includes
 
-Starter template for [Bootstrap 5](https://v5.getbootstrap.com/) with the sticky footer.  Instructions for importing it as a [Parcel Recipe](https://parceljs.org/recipes.html).
+Starter template for [Bootstrap 5](https://v5.getbootstrap.com/).  Instructions for importing it as a [Parcel Recipe](https://parceljs.org/recipes.html).
 
 A .devcontainer for Node and Javascript Projects for [Github Codespaces](https://docs.github.com/en/github/developing-online-with-codespaces).
 

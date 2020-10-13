@@ -15,7 +15,7 @@ Delete the existing .clasp.json file and then create your starter web app: `clas
 
 ### Build and Deploy
 
-Once it is setup, run your build with `parcel build client/index.html --no-minify --no-source-maps --no-cache`.  I used the live server extension to test if the styling and javascript worked as expected. 
+Once it is setup, add a dist folder. run your build with `parcel build client/index.html --no-minify --no-source-maps --no-cache`.  I used the live server extension to test if the styling and javascript worked as expected. 
 
 To push your deploy, use the command `npm run bld`
 

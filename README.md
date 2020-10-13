@@ -13,11 +13,9 @@ If you are using Codespaces, Log in to clasp `clasp login --no-localhost`, othew
 
 Delete the existing .clasp.json file and then create your starter web app: `clasp create --type webapp  --title "Your Title" --rootDir ./appsscript`
 
-Next install Parcel, Parcel Bundler and the plugin to inline: `npm install --global parcel parcel-bundler parcel-plugin-inliner`.
-
 ### Build and Deploy
 
-Once it is setup, run your build with `npx parcel build client/index.html --no-minify --no-source-maps --no-cache`.  I used the live server extension to test if the styling and javascript worked as expected. 
+Once it is setup, run your build with `parcel build client/index.html --no-minify --no-source-maps --no-cache`.  I used the live server extension to test if the styling and javascript worked as expected. 
 
 To push your deploy, use the command `npm run bld`
 

@@ -29,6 +29,7 @@ function updateNavIndex(baseURL) {
   document.getElementById("main-nav").classList.remove("invisible");
 }
 
+
 function showLoader() {
   document.getElementById("loadingSpinner").classList.remove("invisible");
   document.getElementById("submitBtnLoader").classList.remove("invisible");

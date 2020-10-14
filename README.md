@@ -28,7 +28,9 @@ Starter template for [Bootstrap 5](https://v5.getbootstrap.com/).  Instructions 
 A .devcontainer for Node and Javascript Projects for [Github Codespaces](https://docs.github.com/en/github/developing-online-with-codespaces).
 
 # References and Related Links
-I followed the walkthrough *CLASP Web App, Google Apps Script, Parcel JS, Nodemon, Node JS Workflow Setup Tutorial* [Watch on Youtube](https://www.youtube.com/watch?v=Nf9ExEkySjo), as a guide, as always this author does a great job in stepping through the example.
+For integrating a Google Sheet with a web app, the Youtube playlist [Google Apps Script - Web App Tutorial](https://www.youtube.com/watch?v=RRQvySxaCW0&list=PLv9Pf9aNgemt82hBENyneRyHnD-zORB3l) was invaluable.
+
+For the build setup I followed the walkthrough *CLASP Web App, Google Apps Script, Parcel JS, Nodemon, Node JS Workflow Setup Tutorial* [Watch on Youtube](https://www.youtube.com/watch?v=Nf9ExEkySjo), as a guide, as always this author does a great job in stepping through the example.
 
 [Command Line Interface using clasp](https://developers.google.com/apps-script/guides/clasp)
 

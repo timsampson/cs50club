@@ -6,7 +6,7 @@ const finalDir = "appsscript";
 const distDir = "dist";
 const htmlFile = "index.html";
 
-// Creates /tmp/a/apple, regardless of whether `/tmp` and /tmp/a exist.
+// If app is cloned from git, it won't contain a dist folder and will have an error on build.
 fs.mkdir('dist', { recursive: true }, (err) => {
     if (err) throw err;
 });

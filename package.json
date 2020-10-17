@@ -1,5 +1,5 @@
 {
-  "name": "clasp-web-starter",
+  "name": "cs50-final-project",
   "version": "1.0.0",
   "description": "Google Apps Script Web Site Template with Bootstrap and Parcel for build and deploy.",
   "main": "build/index.html",
@@ -7,7 +7,7 @@
     "bld": "node clean.js && parcel build client/index.html --no-minify --no-source-maps --no-cache && node util.js && clasp push && node clean.js"
   },
   "devDependencies": {
-    "@types/google-apps-script": "1.0.14",
+    "@types/google-apps-script": "^1.0.14",
     "@types/node": "^14.11.8",
     "bootstrap": "^5.0.0-alpha2",
     "node-forge": "^0.10.0",
@@ -26,6 +26,6 @@
   ],
   "author": "Tim Sampson",
   "license": "MIT",
-  "repository": "https://github.com/timsampson/appScriptV8parcel",
+  "repository": "https://github.com/timsampson/cs50form",
   "private": true
 }

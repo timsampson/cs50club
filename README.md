@@ -83,11 +83,11 @@ Once these requirements have been demonstrated in a simple form, making a more c
 
 # Challenges and Gotchas
 
-- Display: having the UI update only after the data has been fetched.
-- NPM installs: which package is absolutely needed as a development, project or global install? When jumping around machines during this project, it was a bit of a pain. Once I started spinning up dev containers, it was easy to clarify the needs, as each new container was a clean start, I could minimize the steps and still confirm a successful deploy.
-- Node scripts: When the build worked and I started with a newly cloned project, the build failed as there was no dist folder checked in. Git doesn't like empty folders, so the workaround was creating a new folder on each build. The Node.js docs were actually quite helpful.
-
-* Is one page enough?: I initially had a home page with a special display only for the teacher login along with the signup, but as I worked on the UI, I realized I should narrow down the project and use the time to resolve issues such as the UI updating without having up to date URLS, table contents or the user name.
+- **Display**: having the UI update only after the data has been fetched.
+- **NPM installs**: which package is absolutely needed as a development, project or global install? When jumping around machines during this project, it was a bit of a pain. Once I started spinning up dev containers, it was easy to clarify the needs, as each new container was a clean start, I could minimize the steps and still confirm a successful deploy.
+- **Node scripts**: When the build worked and I started with a newly cloned project, the build failed as there was no dist folder checked in. Git doesn't like empty folders, so the workaround was creating a new folder on each build. The Node.js docs were actually quite helpful.
+- **Is one page enough?**: I initially had a home page with a special display only for the teacher login along with the signup, but as I worked on the UI, I realized I should narrow down the project and use the time to resolve issues such as the UI updating without having up to date URLS, table contents or the user name.
+- **Mock Data**: Creating enough users and data to model a small school. I used [Mockaroo](https://www.mockaroo.com/) to create enough user information to have 1000 rows with 14 columns of data. Mockaroo's free use option was very helpful in minimizing the time it took to fill up a spreadsheet with mock data.
 
 # References and Related Links
 

@@ -4,7 +4,7 @@ This is the final project for my summer PD, Harvard's CS50 on [Edx.org](https://
 
 ### Description
 
-The school I work at uses Google Apps for Education, which includes [Google Apps Script](https://developers.google.com/apps-script), all of which are currently availabe for free, for details on useage, see [free use tier](https://developers.google.com/apps-script/guides/services/quotas). Over the past few years, I've made use of Apps Script for simple tasks, but had not yet put together a custom form backed by Google Sheets, so for this final project, I've decided to do just that.
+The school I work at uses Google Apps for Education, which includes [Google Apps Script](https://developers.google.com/apps-script), all of which are currently available for free, for details on usage, see [free use tier](https://developers.google.com/apps-script/guides/services/quotas). Over the past few years, I've made use of Apps Script for simple tasks, but had not yet put together a custom form backed by Google Sheets, so for this final project, I've decided to do just that.
 
 The project makes use of many freely available, open source libraries and tools. I've included some links below, but won't go into all the details in this description of the project.
 
@@ -40,7 +40,7 @@ The view is a simple form where the user chooses a club and if the club has room
 
 [Example Site URL](https://script.google.com/a/macros/dishs.tp.edu.tw/s/AKfycbx26XCqju00NoeCmM4PgLhlsLd-Ft0J1Jy202AvESlQoU3ryPM/exec)
 
-This is my CS50 project submission which uses Google Sheets as a database, and Clasp and Parcel for deploying modern Javascript to Google's Apps Script (GAS) projects V8 engine.
+This is my CS50 project submission which uses Google Sheets as a database, and Clasp and Parcel for deploying modern JavaScript to Google's Apps Script (GAS) projects V8 engine.
 
 ### Get Started
 
@@ -58,7 +58,7 @@ To push your deploy, use the command `npm run bld`
 
 Before you can view your webapp, you need an initial deploy. One way is to run `clasp deploy --description "Initial Deploy"`, or you can change the description to anything you see fit. You can also do this from the Apps Script dashboard, `clasp open` will get you to your project on the dashboard and from there you can use the menu options.
 
-This project also includes a `.devcontainer` configuration folder for in browswer development using [Github Codespaces](https://docs.github.com/en/github/developing-online-with-codespaces).
+This project also includes a `.devcontainer` configuration folder for in browser development using [Github Codespaces](https://docs.github.com/en/github/developing-online-with-codespaces).
 
 # Rationale
 
@@ -81,11 +81,19 @@ _Why Clasp_
 
 Once these requirements have been demonstrated in a simple form, making a more complex apps based on this template and these workflows can be implimented much more quickly. I will using this project as a template for quite a few projects this year and beyond.
 
+# Challenges and Gotchas
+
+- Display: having the UI update only after the data has been fetched.
+- NPM installs: which package is absolutely needed as a development, project or global install? When jumping around machines during this project, it was a bit of a pain. Once I started spinning up dev containers, it was easy to clarify the needs, as each new container was a clean start, I could minimize the steps and still confirm a successful deploy.
+- Node scripts: When the build worked and I started with a newly cloned project, the build failed as there was no dist folder checked in. Git doesn't like empty folders, so the workaround was creating a new folder on each build. The Node.js docs were actually quite helpful.
+
+* Is one page enough?: I initially had a home page with a special display only for the teacher login along with the signup, but as I worked on the UI, I realized I should narrow down the project and use the time to resolve issues such as the UI updating without having up to date URLS, table contents or the user name.
+
 # References and Related Links
 
-For integrating a Google Sheet with a web app, the Youtube playlist [Google Apps Script - Web App Tutorial](https://www.youtube.com/watch?v=RRQvySxaCW0&list=PLv9Pf9aNgemt82hBENyneRyHnD-zORB3l) was invaluable.
+For integrating a Google Sheet with a web app, the YouTube playlist [Google Apps Script - Web App Tutorial](https://www.youtube.com/watch?v=RRQvySxaCW0&list=PLv9Pf9aNgemt82hBENyneRyHnD-zORB3l) was invaluable.
 
-For the build setup I followed the walkthrough _CLASP Web App, Google Apps Script, Parcel JS, Nodemon, Node JS Workflow Setup Tutorial_ [Watch on Youtube](https://www.youtube.com/watch?v=Nf9ExEkySjo), as a guide, as always this author does a great job in stepping through the example.
+For the build setup I followed the walkthrough _CLASP Web App, Google Apps Script, Parcel JS, Nodemon, Node JS Workflow Setup Tutorial_ [Watch on YouTube](https://www.youtube.com/watch?v=Nf9ExEkySjo), as a guide, as always this author does a great job in stepping through the example.
 
 [Command Line Interface using clasp](https://developers.google.com/apps-script/guides/clasp)
 

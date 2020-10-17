@@ -4,9 +4,9 @@ This is the final project for my summer PD, Harvard's CS50 on [Edx.org](https://
 
 ### Description
 
-The school I work at uses Google Apps for Education, which includes [Google Apps Script](https://developers.google.com/apps-script), all of which are currently available for free, for details on usage, see [free use tier](https://developers.google.com/apps-script/guides/services/quotas). Over the past few years, I've made use of Apps Script for simple tasks, but had not yet put together a custom form backed by Google Sheets, so for this final project, I've decided to do just that.
+Google Apps for Education, which includes [Google Apps Script](https://developers.google.com/apps-script), and which are currently available for no cost, is used at the school at which I teach. Over the past few years, I've made use of Apps Script for simple tasks, but had not yet put together a custom form backed by Google Sheets. With this project, I had an opportunity to use any web technology stack, so for this final project, I've decided to make a custom club that uses Google Sheets as a database.
 
-The project makes use of many freely available, open source libraries and tools. I've included some links below, but won't go into all the details in this description of the project.
+The project makes use of many freely available, open source libraries and tools. I've included some links below, but won't go into all the details in this description of the project. For details on Google Appsscript (GAS) usage, see [free use tier](https://developers.google.com/apps-script/guides/services/quotas).
 
 The view is a simple form where the user chooses a club and if the club has room, then the user is allowed to join the club. Some of the features which may not be obvious to the user, but were implemented include:
 
@@ -17,10 +17,11 @@ The view is a simple form where the user chooses a club and if the club has room
 
 ##### Data
 
-1. A Google Sheet is as a data source
-2. If the user is a teacher, they can see the list for the all levels, Lower School (LS), Middle School (MS) and High School (HS), but they don't have an option to join the club.
-3. If the user is a student, the table will display the clubs available for their level.
-4. Upon login the table will display the clubs for the users with currently club enrollment numbers. If the student is in a club, they notice will display their club.
+1. **Data Source**: A Google Sheet is as a data source, tabs are used as tables are in a traditinoal database.
+   - The sheet has many tabs that mock data a school might track, students, staff, clubs, rooms, classes... it is not complete, but comprehensive enough for data needed in this example app.
+2. **Read**: If the user is a teacher (in the staff tab), they can see the list for the all levels, Lower School (LS), Middle School (MS) and High School (HS), but they don't have an option to join the club. Alternatively, if the user is a student (in the student tab), the table will display the clubs available for their level.
+3. **UI Updating**: Upon login the table will display the clubs for the users with currently club enrollment numbers. If the student is in a club, their previous record is already in the clubRecord tab, they notice will display their club.
+4. **Write**: When a student successfully enrolls in a club, a row is written to the clubRecord tab and the row includes a time stamp, the student's email address, thier school level, the club moderator (from the club tab), and the name of the chosen club.
 
 #### Views and Notification
 
@@ -74,7 +75,7 @@ There was a need at my school for forms that have features not available in Goog
 
 _Why Clasp_
 
-- Claps allows the use of a local IDE, which gives you so many wonderful benefits, but I mostly wanted Git integration and to use VS Code.
+- Clasp allows the use of a local IDE, which gives you so many wonderful benefits, but I mostly wanted Git integration and to use VS Code.
 - Parcel
   - bundling: projects I am looking forward to building will likely need to integrate external libraries. For this project, I tested bundling using Bootstrap.
   - inlining: it more convenient to work with a conventional project structure and have a Parcel plugin convert it to a format required by GAS, than to structure your project as a typical GAS project. An additional benefit is to use a modern workflow that will prepare you to work on other platforms.

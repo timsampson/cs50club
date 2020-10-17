@@ -1,6 +1,6 @@
 # CS50 Project Submission
 
-This is the final project for my summer PD, CS50 on [Edx.org](https://courses.edx.org/courses/course-v1:HarvardX+CS50+X/course/).  
+This is the final project for my summer PD, Harvard's CS50 on [Edx.org](https://courses.edx.org/courses/course-v1:HarvardX+CS50+X/course/).  
 
 ### Description
 

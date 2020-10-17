@@ -28415,15 +28415,14 @@ require("bootstrap");
 require("../scss/main.scss");
 
 document.addEventListener('DOMContentLoaded', function (event) {
-  // display users' name
-  google.script.run.withSuccessHandler(showUserName).getUserName(); // run the alert mesage
+  // get the proper URL, dev or exec
+  google.script.run.withSuccessHandler(displayNav).getScriptURL(); // create dropdown with the available clubs
 
-  google.script.run.withSuccessHandler(isAlreadyEnrolled).getUserClub(); // create dropdown with the available clubs
+  google.script.run.withSuccessHandler(showClubOptions).getClubListBySchool(); // run the alert mesage
 
-  google.script.run.withSuccessHandler(showClubOptions).getClubListBySchool(); // create club table
+  google.script.run.withSuccessHandler(isAlreadyEnrolled).getUserClub(); // create club table
 
   google.script.run.withSuccessHandler(showClubTable).getClubData();
-  google.script.run.withSuccessHandler(updateNavIndex).getScriptURL();
   document.getElementById('clubAppBtn').addEventListener('click', submitClubApplication);
 });
 var isEnrolled = false; //submitting the application
@@ -28433,10 +28432,11 @@ function showUserName(userName) {
   userSchoolNotice.innerHTML = userName;
 }
 
-function updateNavIndex(baseURL) {
+function displayNav(baseURL) {
   document.getElementById('sign-up-link').href = baseURL + '/index';
-  document.getElementById('sign-up-brand').href = baseURL;
-  document.getElementById("main-nav").classList.remove("invisible");
+  document.getElementById('sign-up-brand').href = baseURL; // display users' name
+
+  google.script.run.withSuccessHandler(showUserName).getUserName();
 }
 
 function showLoader() {
@@ -28487,7 +28487,9 @@ function clubEnrollmentMessage(clubName) {
 
 function showUserName(userName) {
   var userSchoolNotice = document.getElementById('signedInName');
-  userSchoolNotice.innerHTML = userName;
+  userSchoolNotice.innerHTML = userName; // after getting the username and updating the dom, display the NAV
+
+  document.getElementById("main-nav").classList.remove("invisible");
 }
 
 function showStudentSchool() {

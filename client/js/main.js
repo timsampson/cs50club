@@ -2,18 +2,18 @@ import 'bootstrap'
 import '../scss/main.scss'
 
 document.addEventListener('DOMContentLoaded', (event) => {
-  // display users' name
-  google.script.run.withSuccessHandler(showUserName).getUserName();
-  // run the alert mesage
-  google.script.run.withSuccessHandler(isAlreadyEnrolled).getUserClub();
+  // get the proper URL, dev or exec
+  google.script.run.withSuccessHandler(displayNav).getScriptURL();
   // create dropdown with the available clubs
   google.script.run.withSuccessHandler(showClubOptions).getClubListBySchool();
+  // run the alert mesage
+  google.script.run.withSuccessHandler(isAlreadyEnrolled).getUserClub();
   // create club table
   google.script.run.withSuccessHandler(showClubTable).getClubData();
-  google.script.run.withSuccessHandler(updateNavIndex).getScriptURL();
   document
     .getElementById('clubAppBtn')
     .addEventListener('click', submitClubApplication);
+
 });
 
 let isEnrolled = false;
@@ -23,10 +23,11 @@ function showUserName(userName) {
   userSchoolNotice.innerHTML = userName;
 }
 
-function updateNavIndex(baseURL) {
+function displayNav(baseURL) {
   document.getElementById('sign-up-link').href = baseURL + '/index';
   document.getElementById('sign-up-brand').href = baseURL;
-  document.getElementById("main-nav").classList.remove("invisible");
+  // display users' name
+  google.script.run.withSuccessHandler(showUserName).getUserName();
 }
 
 
@@ -76,6 +77,8 @@ function clubEnrollmentMessage(clubName) {
 function showUserName(userName) {
   let userSchoolNotice = document.getElementById('signedInName');
   userSchoolNotice.innerHTML = userName;
+  // after getting the username and updating the dom, display the NAV
+  document.getElementById("main-nav").classList.remove("invisible");
 }
 
 function showStudentSchool() {

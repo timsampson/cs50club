@@ -1,8 +1,8 @@
-let db = SpreadsheetApp.openById("1Uf02C1mBDxwkyKPfLvmVPa1IAWIAdiw5uVDYIQvG_cg");
-let clubEnrollmentSheet = db.getSheetByName("clubrecord");
-let staffSheet = db.getSheetByName("staff");
-let studentSheet = db.getSheetByName("students");
-let clubSheet = db.getSheetByName("clubs");
+const db = SpreadsheetApp.openById("1Uf02C1mBDxwkyKPfLvmVPa1IAWIAdiw5uVDYIQvG_cg");
+const clubEnrollmentSheet = db.getSheetByName("clubrecord");
+const staffSheet = db.getSheetByName("staff");
+const studentSheet = db.getSheetByName("students");
+const clubSheet = db.getSheetByName("clubs");
 let staffValues = staffSheet.getDataRange().getValues();
 let clubEnrollmentValues = clubEnrollmentSheet.getDataRange().getValues();
 let studentValues = studentSheet.getDataRange().getValues();
@@ -11,22 +11,25 @@ let clubValues = clubSheet.getDataRange().getValues();
 function doGet(event) {
     return HtmlService.createTemplateFromFile("index").evaluate();
 }
-function include(filename) {
+function include(filename: string) {
     return HtmlService.createHtmlOutputFromFile(filename).getContent();
 }
 function isTeacher() {
     return ((staffValues.findIndex(r => r[1] === getEmail()) > 0));
 }
-
 function getScriptURL() {
     return ScriptApp.getService().getUrl();
 }
-
 function getEmail() {
     return Session.getActiveUser().getEmail();
 }
-function getStudentRow() {
-    return (studentValues.findIndex(r => r[4] === getEmail()));
+function getUserRow() {
+    if (isTeacher()) {
+        return (staffValues.findIndex(r => r[1] === getEmail()));
+    }
+    else {
+        return (studentValues.findIndex(r => r[4] === getEmail()));
+    }
 }
 function getStudentEmailCol() {
     return (studentValues[0].findIndex(c => c === 'email'));
@@ -44,17 +47,23 @@ function getStudentLNCol() {
     return (studentValues[0].findIndex(c => c === 'last_name'));
 }
 function getStudentSchool() {
-    if (getStudentRow() > 0) {
-        return studentValues[getStudentRow()][getStudentSchCol()];
+    if (getUserRow() > 0) {
+        return studentValues[getUserRow()][getStudentSchCol()];
     }
     else {
         return 'No School Assigned';
     }
 }
 function getUserName() {
-    if (getStudentRow() > 0) {
-        let firstName = studentValues[getStudentRow()][getStudentFNCol()];
-        let lastName = studentValues[getStudentRow()][getStudentLNCol()];
+    if (isTeacher()) {
+        let firstName = staffValues[getUserRow()][2];
+        let lastName = staffValues[getUserRow()][3];
+        let fullName = firstName + ' ' + lastName;
+        return fullName;
+    }
+    else if (getUserRow() > 0) {
+        let firstName = studentValues[getUserRow()][getStudentFNCol()];
+        let lastName = studentValues[getUserRow()][getStudentLNCol()];
         let fullName = firstName + ' ' + lastName;
         return fullName;
     }
@@ -62,8 +71,43 @@ function getUserName() {
         return 'User Not Found';
     }
 }
+function getUserClub() {
+    let clubEnrollmentValues = getUpdatedClubEnrollmentData();
+    if (isInClub()) {
+        let studentRecCol = (clubEnrollmentValues.findIndex(r => r[1] === getEmail()));
+        let clubName = clubEnrollmentValues[studentRecCol][5];
+        return clubName;
+    }
+}
+function isInClub() {
+    let clubEnrollmentValues = getUpdatedClubEnrollmentData();
+    if ((clubEnrollmentValues.findIndex(r => r[1] === getEmail()) > 0)) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+function getClubData() {
+    SpreadsheetApp.flush();
+    let clubValues = getUpdatedClubData();
+    if (isTeacher()) {
+        // if the user is an admin on staff
+        return clubValues;
+    }
+    else {
+        // only return the clubs for the users school level
+        return getSchoolClubData(getStudentSchool());
+    }
+}
+function getUpdatedClubData() {
+    SpreadsheetApp.flush();
+    let getUpdatedclubValues = db.getSheetByName("clubs").getDataRange().getValues();
+    clubValues = getUpdatedclubValues;
+    return clubValues;
+}
 function setRecordClubEntry(clubNameEntry) {
-    let studentSchool = getStudentSchool();
+    const studentSchool = getStudentSchool();
     // gets the list of clubs for the current students school.
     let clubSchoolData = getSchoolClubData(studentSchool);
     let clubDetailsRow = clubSchoolData.filter(r => r[1] === clubNameEntry);
@@ -88,6 +132,7 @@ function setRecordClubEntry(clubNameEntry) {
             clubApplication.clubName
         ]);
         sendEmailNotice(clubApplication);
+        SpreadsheetApp.flush();
         return clubNameEntry;
     }
     else {
@@ -95,45 +140,7 @@ function setRecordClubEntry(clubNameEntry) {
     }
 }
 
-function getUserClub() {
-    let clubEnrollmentValues = getUpdatedClubEnrollmentData();
-    if (isInClub()) {
-        let studentRecCol = (clubEnrollmentValues.findIndex(r => r[1] === getEmail()));
-        let clubName = clubEnrollmentValues[studentRecCol][5];
-        return clubName;
-    }
-}
-function getClubData() {
-    let clubValues = getUpdatedClubData();
-    if (isTeacher()) {
-        // if the user is an admin on staff
-        return clubValues;
-    }
-    else {
-        // only return the clubs for the users school level
-        return getSchoolClubData(getStudentSchool());
-    }
-}
-function isInClub() {
-    let clubEnrollmentValues = getUpdatedClubEnrollmentData();
-    if ((clubEnrollmentValues.findIndex(r => r[1] === getEmail()) > 0)) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-// there is an issue where the data is fetched before the spreadsheet updates,
-// SpreadSheetApp.flush appears to fix it 95% of the time.
-// assigning a new variable and then updating the global seems to work 100
-function getUpdatedClubData() {
-    SpreadsheetApp.flush();
-    let getUpdatedclubValues = clubSheet.getDataRange().getValues();
-    clubValues = getUpdatedclubValues;
-    return clubValues;
-}
 function getUpdatedClubEnrollmentData() {
-    SpreadsheetApp.flush();
     let UpdatedClubEnrollmentValues = clubEnrollmentSheet.getDataRange().getValues();
     clubEnrollmentValues = UpdatedClubEnrollmentValues;
     return clubEnrollmentValues;
@@ -152,11 +159,11 @@ function getClubListBySchool() {
         return clubSchoolList;
     }
     else {
-        return ['You are an Admin'];
+        return ['No Clubs Available'];
     }
 }
 
-function sendEmailNotice(clubApplication) {
+function sendEmailNotice(clubApplication: { clubName: string; stuName: string; stuEmail: string; clubDetails: string; clubModerator: string; }) {
     // Create the individual template
     const htmlBody = HtmlService.createTemplateFromFile("welcome-mail");
     htmlBody.stuName = clubApplication.stuName;

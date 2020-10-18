@@ -1,9 +1,9 @@
 import 'bootstrap'
 import '../scss/main.scss'
+// get the proper URL, dev or exec
+google.script.run.withSuccessHandler(displayNav).getScriptURL();
 
 document.addEventListener('DOMContentLoaded', (event) => {
-  // get the proper URL, dev or exec
-  google.script.run.withSuccessHandler(displayNav).getScriptURL();
   // create dropdown with the available clubs
   google.script.run.withSuccessHandler(showClubOptions).getClubListBySchool();
   // run the alert mesage
@@ -17,12 +17,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 });
 
 let isEnrolled = false;
-//submitting the application
-function showUserName(userName) {
-  let userSchoolNotice = document.getElementById('signedInName');
-  userSchoolNotice.innerHTML = userName;
-}
-
+// Nav display
 function displayNav(baseURL) {
   document.getElementById('sign-up-link').href = baseURL + '/index';
   document.getElementById('sign-up-brand').href = baseURL;
@@ -30,6 +25,11 @@ function displayNav(baseURL) {
   google.script.run.withSuccessHandler(showUserName).getUserName();
 }
 
+// loader button and table display
+function showUserName(userName) {
+  let userSchoolNotice = document.getElementById('signedInName');
+  userSchoolNotice.innerHTML = userName;
+}
 
 function showLoader() {
   document.getElementById("loadingSpinner").classList.remove("invisible");
@@ -68,10 +68,12 @@ function clubEnrollmentMessage(clubName) {
   if (clubName) {
     clubFormStatus.innerHTML = 'Welcome to the ' + clubName + ' club';
     clubFormStatus.classList.add('alert', 'alert-success', 'show');
+    isEnrolled = true;
   } else {
     clubFormStatus.innerHTML = 'Sorry, your choice is already full, please select another option.';
     clubFormStatus.classList.add('alert', 'alert-danger', 'show');
   }
+  updateClubTable();
 }
 
 function showUserName(userName) {
@@ -79,11 +81,6 @@ function showUserName(userName) {
   userSchoolNotice.innerHTML = userName;
   // after getting the username and updating the dom, display the NAV
   document.getElementById("main-nav").classList.remove("invisible");
-}
-
-function showStudentSchool() {
-  let userName = document.getElementById('studentSchool');
-  userSchoolNotice.innerHTML = google.script.run.getStudentSchool();
 }
 
 function clearClubTable() {
@@ -95,28 +92,25 @@ function clearClubTable() {
 
 function submitClubApplication() {
   let clubFormStatus = document.getElementById('clubAlertNotice');
-  console.log('Enrolled status is; ' + isEnrolled);
-
   if (isEnrolled) {
-    console.log('Not Processing');
     clubFormStatus.innerHTML = 'You are already enrolled in a club';
     clubFormStatus.classList.add('alert', 'alert-warning', 'show');
   } else {
     let clubName = document.getElementById("clubChoice").value;
-    showLoader();
     google.script.run.withSuccessHandler(clubEnrollmentMessage).setRecordClubEntry(clubName);
-    clearClubTable();
-    updateClubData();
-    isEnrolled = true;
+
   }
 }
 
-// app script returns the stale copy of the sheet values, so adding this new function....
-function updateClubData() {
+function updateClubTable() {
+  clearClubTable();
+  showLoader();
   google.script.run.withSuccessHandler(showClubTable).getClubData();
+  removeLoader();
 }
 
 function showClubTable(clubResults) {
+  //clearClubTable();
   let clubTableBody = document.getElementById('club-table-body');
   for (let r = 0; r < clubResults.length; r++) {
     let row = clubTableBody.insertRow();

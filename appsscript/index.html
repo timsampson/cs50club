@@ -28481,12 +28481,14 @@ function clubEnrollmentMessage(clubName) {
     clubFormStatus.innerHTML = 'Welcome to the ' + clubName + ' club';
     clubFormStatus.classList.add('alert', 'alert-success', 'show');
     isEnrolled = true;
+    updateClubTable();
   } else {
     clubFormStatus.innerHTML = 'Sorry, your choice is already full, please select another option.';
     clubFormStatus.classList.add('alert', 'alert-danger', 'show');
+    document.getElementById("clubAppBtn").disabled = false;
   }
 
-  updateClubTable();
+  document.getElementById("clubAppBtn").setAttribute("disabled", "");
 }
 
 function showUserName(userName) {
@@ -28505,6 +28507,7 @@ function clearClubTable() {
 }
 
 function submitClubApplication() {
+  document.getElementById("clubAppBtn").setAttribute("disabled", "");
   var clubFormStatus = document.getElementById('clubAlertNotice');
 
   if (isEnrolled) {

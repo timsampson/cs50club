@@ -13,9 +13,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
   document
     .getElementById('clubAppBtn')
     .addEventListener('click', submitClubApplication);
-
 });
-
 let isEnrolled = false;
 // Nav display
 function displayNav(baseURL) {
@@ -69,11 +67,13 @@ function clubEnrollmentMessage(clubName) {
     clubFormStatus.innerHTML = 'Welcome to the ' + clubName + ' club';
     clubFormStatus.classList.add('alert', 'alert-success', 'show');
     isEnrolled = true;
+    updateClubTable();
   } else {
     clubFormStatus.innerHTML = 'Sorry, your choice is already full, please select another option.';
     clubFormStatus.classList.add('alert', 'alert-danger', 'show');
+    document.getElementById("clubAppBtn").disabled = false;
   }
-  updateClubTable();
+  document.getElementById("clubAppBtn").setAttribute("disabled", "true");
 }
 
 function showUserName(userName) {
@@ -91,14 +91,15 @@ function clearClubTable() {
 }
 
 function submitClubApplication() {
+  document.getElementById("clubAppBtn").setAttribute("disabled", "");
   let clubFormStatus = document.getElementById('clubAlertNotice');
   if (isEnrolled) {
     clubFormStatus.innerHTML = 'You are already enrolled in a club';
     clubFormStatus.classList.add('alert', 'alert-warning', 'show');
-  } else {
+  }
+  else {
     let clubName = document.getElementById("clubChoice").value;
     google.script.run.withSuccessHandler(clubEnrollmentMessage).setRecordClubEntry(clubName);
-
   }
 }
 

@@ -106,7 +106,7 @@ function getUpdatedClubData() {
     clubValues = getUpdatedclubValues;
     return clubValues;
 }
-function setRecordClubEntry(clubNameEntry) {
+function setRecordClubEntry(clubNameEntry: string) {
     const studentSchool = getStudentSchool();
     // gets the list of clubs for the current students school.
     let clubSchoolData = getSchoolClubData(studentSchool);
@@ -141,11 +141,12 @@ function setRecordClubEntry(clubNameEntry) {
 }
 
 function getUpdatedClubEnrollmentData() {
-    let UpdatedClubEnrollmentValues = clubEnrollmentSheet.getDataRange().getValues();
+    SpreadsheetApp.flush();
+    let UpdatedClubEnrollmentValues = db.getSheetByName("clubrecord").getDataRange().getValues();
     clubEnrollmentValues = UpdatedClubEnrollmentValues;
     return clubEnrollmentValues;
 }
-function getSchoolClubData(school) {
+function getSchoolClubData(school: string) {
     clubValues = getUpdatedClubData();
     return clubValues.filter(r => r[6] === school);
 }

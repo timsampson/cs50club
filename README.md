@@ -10,7 +10,7 @@ Google Apps for Education, which includes [Google Apps Script](https://developer
 
 The project makes use of many freely available, open source libraries and tools. I've included some links below, but won't go into all the details in this description of the project. For details on Google Appsscript (GAS) usage, see [free use tier](https://developers.google.com/apps-script/guides/services/quotas).
 
-The view is a simple form where the user chooses a club and if the club has room, then the user is allowed to join the club. Some of the features which may not be obvious to the user, but were implemented include:
+The view is a simple form where the user chooses a club and if the club has room, then the user is allowed to join the club. Some of the features which may not be obvious to the user, but were implemented, include:
 
 ##### Authentication and Authorization
 

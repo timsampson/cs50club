@@ -10,17 +10,18 @@ The project makes use of many freely available, open source libraries and tools.
 
 The view is a simple form where the user chooses a club and if the club has room, then the user is allowed to join the club. Some of the features which may not be obvious to the user, but were implemented include:
 
-##### Authentication
+##### Authentication and Authorization
 
 1. Authentication is handled by Google's login.
 2. Authorization is based on the user's level, teacher or student.
 
 ##### Data
 
-1. **Data Source**: A Google Sheet is as a data source, tabs are used as tables are in a traditinoal database.
+1. **Data Source**: A Google Sheet is as a data source, tabs are used as tables are in a traditional database.  
+   - If an data administrator needs to edit something and they are familiar with a spreadsheet, they can simply open the spreadsheet and make the edits.
    - The sheet has many tabs that mock data a school might track, students, staff, clubs, rooms, classes... it is not complete, but comprehensive enough for data needed in this example app.
 2. **Read**: If the user is a teacher (in the staff tab), they can see the list for the all levels, Lower School (LS), Middle School (MS) and High School (HS), but they don't have an option to join the club. Alternatively, if the user is a student (in the student tab), the table will display the clubs available for their level.
-3. **UI Updating**: Upon login the table will display the clubs for the users with currently club enrollment numbers. If the student is in a club, their previous record is already in the clubRecord tab, they notice will display their club.
+3. **UI Updating**: Upon login the table will display the clubs for the users with currently club enrollment numbers. If the student is in a club, their previous record is already in the clubRecord tab, they notice will display their club. 
 4. **Write**: When a student successfully enrolls in a club, a row is written to the clubRecord tab and the row includes a time stamp, the student's email address, thier school level, the club moderator (from the club tab), and the name of the chosen club.
 
 #### Views and Notification
@@ -84,11 +85,12 @@ Once these requirements have been demonstrated in a simple form, making a more c
 
 # Challenges and Gotchas
 
-- **Display**: having the UI update only after the data has been fetched.
+- **Display**: having the UI update only after the data has been fetched.  I used `SpreadsheetApp.flush();` to try and ensure that the update had a chance to finish before the UI was updated, but it didn't apear to fix it constently. I found that instead of refreshing the tab values with `.getDataRange().getValues()`, using `getSheetByName` to again fetch the tab and then getting the values would return the updated values. I'm not sure if this is becuase it just took longer and was able to fetch the new values after the cache was updated or always returned the current version. I couldn't find any documentation on the implimentation.
 - **NPM installs**: which package is absolutely needed as a development, project or global install? When jumping around machines during this project, it was a bit of a pain. Once I started spinning up dev containers, it was easy to clarify the needs, as each new container was a clean start, I could minimize the steps and still confirm a successful deploy.
 - **Node scripts**: When the build worked and I started with a newly cloned project, the build failed as there was no dist folder checked in. Git doesn't like empty folders, so the workaround was creating a new folder on each build. The Node.js docs were actually quite helpful.
 - **Is one page enough?**: I initially had a home page with a special display only for the teacher login along with the signup, but as I worked on the UI, I realized I should narrow down the project and use the time to resolve issues such as the UI updating without having up to date URLS, table contents or the user name.
 - **Mock Data**: Creating enough users and data to model a small school. I used [Mockaroo](https://www.mockaroo.com/) to create enough user information to have 1000 rows with 14 columns of data. Mockaroo's free use option was very helpful in minimizing the time it took to fill up a spreadsheet with mock data.
+- As I wrap up this project, I see there are places to optimize and separate the concerns even more, but.... the app works as expected and I'm happy with this submission.  The intention was to create a working example that I could use as a template for common projects I be working on next year, and I think I've arrived at that point 😊🎂🎉
 
 # References and Related Links
 

@@ -89,7 +89,6 @@ function isInClub() {
     }
 }
 function getClubData() {
-    SpreadsheetApp.flush();
     let clubValues = getUpdatedClubData();
     if (isTeacher()) {
         // if the user is an admin on staff
@@ -101,7 +100,6 @@ function getClubData() {
     }
 }
 function getUpdatedClubData() {
-    SpreadsheetApp.flush();
     let getUpdatedclubValues = db.getSheetByName("clubs").getDataRange().getValues();
     clubValues = getUpdatedclubValues;
     return clubValues;
@@ -132,16 +130,13 @@ function setRecordClubEntry(clubNameEntry: string) {
             clubApplication.clubName
         ]);
         sendEmailNotice(clubApplication);
-        SpreadsheetApp.flush();
         return clubNameEntry;
     }
     else {
         return false;
     }
 }
-
 function getUpdatedClubEnrollmentData() {
-    SpreadsheetApp.flush();
     let UpdatedClubEnrollmentValues = db.getSheetByName("clubrecord").getDataRange().getValues();
     clubEnrollmentValues = UpdatedClubEnrollmentValues;
     return clubEnrollmentValues;
@@ -163,7 +158,6 @@ function getClubListBySchool() {
         return ['No Clubs Available'];
     }
 }
-
 function sendEmailNotice(clubApplication: { clubName: string; stuName: string; stuEmail: string; clubDetails: string; clubModerator: string; }) {
     // Create the individual template
     const htmlBody = HtmlService.createTemplateFromFile("welcome-mail");

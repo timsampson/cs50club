@@ -23,6 +23,15 @@ function displayNav(baseURL) {
   google.script.run.withSuccessHandler(showUserName).getUserName();
 }
 
+// enable the signup button
+function enableSignupBtn() {
+  document.getElementById("clubAppBtn").removeAttribute("disabled");
+}
+// disable the signup button 
+function disableSignupBtn() {
+  document.getElementById("clubAppBtn").setAttribute("disabled", "true");
+}
+
 // loader button and table display
 function showUserName(userName) {
   let userSchoolNotice = document.getElementById('signedInName');
@@ -55,6 +64,7 @@ function isAlreadyEnrolled(isInClub) {
     clubFormStatus.classList.add('alert', 'alert-warning', 'show');
     isEnrolled = false;
   }
+  enableSignupBtn();
 }
 
 function clubEnrollmentMessage(clubName) {
@@ -71,9 +81,8 @@ function clubEnrollmentMessage(clubName) {
   } else {
     clubFormStatus.innerHTML = 'Sorry, your choice is already full, please select another option.';
     clubFormStatus.classList.add('alert', 'alert-danger', 'show');
-    document.getElementById("clubAppBtn").disabled = false;
   }
-  document.getElementById("clubAppBtn").setAttribute("disabled", "true");
+  enableSignupBtn();
 }
 
 function showUserName(userName) {
@@ -91,11 +100,12 @@ function clearClubTable() {
 }
 
 function submitClubApplication() {
-  document.getElementById("clubAppBtn").setAttribute("disabled", "");
+  disableSignupBtn();
   let clubFormStatus = document.getElementById('clubAlertNotice');
   if (isEnrolled) {
     clubFormStatus.innerHTML = 'You are already enrolled in a club';
     clubFormStatus.classList.add('alert', 'alert-warning', 'show');
+    enableSignupBtn();
   }
   else {
     let clubName = document.getElementById("clubChoice").value;

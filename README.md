@@ -39,8 +39,8 @@ The view is a simple form where the user chooses a club and if the club has room
 
 #### Deployment and Hosting
 
-1. Clasp ~ enables local development in Typescript and deployment to Google's Apps Script (GAS) hosting. [clasp](https://github.com/google/clasp)
-2. Parcel for bundling Bootstrap 5 and also for inlining CSS and JS, which is necessary for GAS hosting. [parceljs.org](https://parceljs.org/)
+1. Clasp ~ enables local development in Typescript and deployment to Google's Apps Script (GAS) hosting. Link-> [clasp](https://github.com/google/clasp)
+2. Parcel for bundling Bootstrap 5 and also for inlining CSS and JS, which is necessary for GAS hosting. link-> [parceljs.org](https://parceljs.org/)
 
 ### Get Started
 

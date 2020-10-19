@@ -40,10 +40,6 @@ The view is a simple form where the user chooses a club and if the club has room
 1. Clasp ~ enables local development in Typescript and deployment to Google's Apps Script (GAS) hosting. [clasp](https://github.com/google/clasp)
 2. Parcel for bundling Bootstrap 5 and also for inlining CSS and JS, which is necessary for GAS hosting. [parceljs.org](https://parceljs.org/)
 
-[Example Site URL](https://script.google.com/a/macros/dishs.tp.edu.tw/s/AKfycbx26XCqju00NoeCmM4PgLhlsLd-Ft0J1Jy202AvESlQoU3ryPM/exec)
-
-This is my CS50 project submission which uses Google Sheets as a database, and Clasp and Parcel for deploying modern JavaScript to Google's Apps Script (GAS) projects V8 engine.
-
 ### Get Started
 
 Clone the repo, run `npm install`, install Clasp globally `npm install @google/clasp -g` and if prompted for a dependency, inquirer@^6.0.0, run `npm install inquirer@^6.0.0 -g`.

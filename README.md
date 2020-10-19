@@ -2,6 +2,8 @@
 
 This is the final project for my summer Professional Development, Harvard's CS50 on [Edx.org](https://courses.edx.org/courses/course-v1:HarvardX+CS50+X/course/).
 
+![Gif of Project](https://raw.githubusercontent.com/timsampson/cs50club/main/docs/cs50formDemo.gif)
+
 ### Description
 
 Google Apps for Education, which includes [Google Apps Script](https://developers.google.com/apps-script), and which are currently available for no cost, is used at the school at which I teach. Over the past few years, I've made use of Apps Script for simple tasks, but had not yet put together a custom form backed by Google Sheets. With this project, I had an opportunity to use any web technology stack, so for this final project, I've decided to make a custom club that uses Google Sheets as a database.

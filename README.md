@@ -35,11 +35,11 @@ The view is a simple form where the user chooses a club and if the club has room
    - the club name if the student is already in a club
    - a styled success message if the resource is provisioned, if the student joins the club.
    - a styled error message if the club chosen is already full.
-5. If there is a successful enrolment, the student will get an email notification. The app has access to the email property when the user logs in.
+5. If there is a successful enrolment, the student will get an email notification. When the user logs in the app has access to the email property on the user object.
 
 #### Deployment and Hosting
 
-1. Clasp ~ enables local development in Typescript and deployment to Google's Apps Script (GAS) hosting, link-> [clasp](https://github.com/google/clasp)
+1. Clasp enables local development in Typescript and deployment to Google's Apps Script (GAS) hosting, link-> [clasp](https://github.com/google/clasp)
 2. Parcel for bundling Bootstrap 5 and also for inlining CSS and JS, which is necessary for GAS hosting, link-> [parceljs.org](https://parceljs.org/)
 
 ### Get Started
@@ -72,7 +72,7 @@ There was a need at my school for forms that have features not available in Goog
 - shows a custom message on the form when a certain number of repsonses have been recorded
 - stops allowing repsonses after a certain condition has been met
 
-_Why Clasp_
+_Why Clasp?_
 
 - Clasp allows the use of a local IDE, which gives you so many wonderful benefits, but I mostly wanted Git integration and to use VS Code.
 - Parcel

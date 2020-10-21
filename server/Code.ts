@@ -8,7 +8,7 @@ let clubEnrollmentValues = clubEnrollmentSheet.getDataRange().getValues();
 let studentValues = studentSheet.getDataRange().getValues();
 let clubValues = clubSheet.getDataRange().getValues();
 
-function doGet(event) {
+function doGet(event: any) {
     return HtmlService.createTemplateFromFile("index").evaluate();
 }
 function include(filename: string) {
@@ -23,53 +23,35 @@ function getScriptURL() {
 function getEmail() {
     return Session.getActiveUser().getEmail();
 }
-function getUserRow() {
-    if (isTeacher()) {
-        return (staffValues.findIndex(r => r[1] === getEmail()));
-    }
-    else {
-        return (studentValues.findIndex(r => r[4] === getEmail()));
-    }
+function getUserRow(values: any[]) {
+    return (values.findIndex(r => r[1] === getEmail()));
 }
-function getStudentEmailCol() {
-    return (studentValues[0].findIndex(c => c === 'email'));
+function getCol(values: any[], colName: string) {
+    return (values[0].findIndex((c: string) => c === colName));
 }
-function getStudentSchCol() {
-    return (studentValues[0].findIndex(c => c === 'school'));
-}
-function getStudentFNCol() {
-    return (studentValues[0].findIndex(c => c === 'first_name'));
-}
-function getStudentMNCol() {
-    return (studentValues[0].findIndex(c => c === 'middle_name'));
-}
-function getStudentLNCol() {
-    return (studentValues[0].findIndex(c => c === 'last_name'));
-}
-function getStudentSchool() {
-    if (getUserRow() > 0) {
-        return studentValues[getUserRow()][getStudentSchCol()];
+function getSchool(values: any[]) {
+    if (getUserRow(values) > 0) {
+        return values[getUserRow(values)][getCol(studentValues, 'school')];
     }
     else {
         return 'No School Assigned';
     }
 }
 function getUserName() {
+    let dataValues = [];
     if (isTeacher()) {
-        let firstName = staffValues[getUserRow()][2];
-        let lastName = staffValues[getUserRow()][3];
-        let fullName = firstName + ' ' + lastName;
-        return fullName;
-    }
-    else if (getUserRow() > 0) {
-        let firstName = studentValues[getUserRow()][getStudentFNCol()];
-        let lastName = studentValues[getUserRow()][getStudentLNCol()];
-        let fullName = firstName + ' ' + lastName;
-        return fullName;
+        dataValues = staffValues;
+        
     }
     else {
-        return 'User Not Found';
+        dataValues = studentValues;
     }
+    let firstNameCol = getCol(dataValues, 'first_name');
+    let lastNameCol = getCol(dataValues, 'last_name');
+    let firstName = dataValues[getUserRow(dataValues)][firstNameCol];
+    let lastName = dataValues[getUserRow(dataValues)][lastNameCol];
+    let fullName = firstName + ' ' + lastName;
+    return fullName;
 }
 function getUserClub() {
     let clubEnrollmentValues = getUpdatedClubEnrollmentData();
@@ -96,7 +78,7 @@ function getClubData() {
     }
     else {
         // only return the clubs for the users school level
-        return getSchoolClubData(getStudentSchool());
+        return getSchoolClubData(getSchool(studentValues));
     }
 }
 function getUpdatedClubData() {
@@ -105,14 +87,15 @@ function getUpdatedClubData() {
     return clubValues;
 }
 function setRecordClubEntry(clubNameEntry: string) {
-    const studentSchool = getStudentSchool();
+    const studentSchool = getSchool(studentValues);
     // gets the list of clubs for the current students school.
     let clubSchoolData = getSchoolClubData(studentSchool);
     let clubDetailsRow = clubSchoolData.filter(r => r[1] === clubNameEntry);
     //return clubDetails;
     // need to check the club has room available for the student's level 
-    let clubHasRoom = clubDetailsRow[0][3] > clubDetailsRow[0][2];
-    if (clubHasRoom) {
+    let capacity = clubDetailsRow[0][3];
+    let enrolled = clubDetailsRow[0][2];
+    if (capacity > enrolled) {
         const currentDate = new Date();
         const clubApplication = {
             clubName: clubNameEntry,
@@ -146,7 +129,7 @@ function getSchoolClubData(school: string) {
     return clubValues.filter(r => r[6] === school);
 }
 function getClubListBySchool() {
-    let clubSchoolData = getSchoolClubData(getStudentSchool());
+    let clubSchoolData = getSchoolClubData(getSchool(studentValues));
     if (clubSchoolData.length > 0) {
         let clubSchoolList = [];
         for (let r = 0; r < clubSchoolData.length; r++) {

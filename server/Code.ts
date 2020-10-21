@@ -1,19 +1,4 @@
-const db = SpreadsheetApp.openById("1Uf02C1mBDxwkyKPfLvmVPa1IAWIAdiw5uVDYIQvG_cg");
-const clubEnrollmentSheet = db.getSheetByName("clubrecord");
-const staffSheet = db.getSheetByName("staff");
-const studentSheet = db.getSheetByName("students");
-const clubSheet = db.getSheetByName("clubs");
-let staffValues = staffSheet.getDataRange().getValues();
-let clubEnrollmentValues = clubEnrollmentSheet.getDataRange().getValues();
-let studentValues = studentSheet.getDataRange().getValues();
-let clubValues = clubSheet.getDataRange().getValues();
 
-function doGet(event: any) {
-    return HtmlService.createTemplateFromFile("index").evaluate();
-}
-function include(filename: string) {
-    return HtmlService.createHtmlOutputFromFile(filename).getContent();
-}
 function isTeacher() {
     return ((staffValues.findIndex(r => r[1] === getEmail()) > 0));
 }
@@ -86,39 +71,7 @@ function getUpdatedClubData() {
     clubValues = getUpdatedclubValues;
     return clubValues;
 }
-function setRecordClubEntry(clubNameEntry: string) {
-    const studentSchool = getSchool(studentValues);
-    // gets the list of clubs for the current students school.
-    let clubSchoolData = getSchoolClubData(studentSchool);
-    let clubDetailsRow = clubSchoolData.filter(r => r[1] === clubNameEntry);
-    //return clubDetails;
-    // need to check the club has room available for the student's level 
-    let capacity = clubDetailsRow[0][3];
-    let enrolled = clubDetailsRow[0][2];
-    if (capacity > enrolled) {
-        const currentDate = new Date();
-        const clubApplication = {
-            clubName: clubNameEntry,
-            stuName: getUserName(),
-            stuEmail: getEmail(),
-            clubDetails: clubDetailsRow[0][5],
-            clubModerator: clubDetailsRow[0][4]
-        };
-        clubEnrollmentSheet.appendRow([
-            currentDate,
-            clubApplication.stuEmail,
-            clubApplication.stuName,
-            studentSchool,
-            clubApplication.clubModerator,
-            clubApplication.clubName
-        ]);
-        sendEmailNotice(clubApplication);
-        return clubNameEntry;
-    }
-    else {
-        return false;
-    }
-}
+
 function getUpdatedClubEnrollmentData() {
     let UpdatedClubEnrollmentValues = db.getSheetByName("clubrecord").getDataRange().getValues();
     clubEnrollmentValues = UpdatedClubEnrollmentValues;
@@ -140,22 +93,4 @@ function getClubListBySchool() {
     else {
         return ['No Clubs Available'];
     }
-}
-function sendEmailNotice(clubApplication: { clubName: string; stuName: string; stuEmail: string; clubDetails: string; clubModerator: string; }) {
-    // Create the individual template
-    const htmlBody = HtmlService.createTemplateFromFile("welcome-mail");
-    htmlBody.stuName = clubApplication.stuName;
-    htmlBody.clubName = clubApplication.clubName;
-    htmlBody.clubDetails = clubApplication.clubDetails;
-    htmlBody.clubModerator = clubApplication.clubModerator;
-    const emailHtml = htmlBody.evaluate().getContent();
-    const email = clubApplication.stuEmail;
-    const ccEmail = 'tsampson@dishs.tp.edu.tw';
-    let welcomeMessage = 'Welcome to the ' + clubApplication.clubName + ' club!';
-    MailApp.sendEmail({
-        cc: ccEmail,
-        htmlBody: emailHtml,
-        subject: welcomeMessage,
-        to: email,
-    });
 }

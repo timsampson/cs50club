@@ -89,7 +89,9 @@ function showUserName(userName) {
   let userSchoolNotice = document.getElementById('signedInName');
   userSchoolNotice.innerHTML = userName;
   // after getting the username and updating the dom, display the NAV
-  document.getElementById("main-nav").classList.remove("invisible");
+  document.getElementById("sign-up-link").classList.remove("invisible");
+  document.getElementById("signedInName").classList.remove("invisible");
+  document.getElementById("sign-up-brand").classList.remove("invisible");
 }
 
 function clearClubTable() {

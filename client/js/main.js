@@ -1,13 +1,13 @@
 import 'bootstrap'
 import '../scss/main.scss'
-// get the proper URL, dev or exec
-google.script.run.withSuccessHandler(displayNav).getScriptURL();
-
 document.addEventListener('DOMContentLoaded', (event) => {
+  // get the proper URL, dev or exec
+  google.script.run.withSuccessHandler(displayNav).getScriptURL();
   // create dropdown with the available clubs
   google.script.run.withSuccessHandler(showClubOptions).getClubListBySchool();
   // run the alert mesage
-  google.script.run.withSuccessHandler(isAlreadyEnrolled).getUserClub();
+  google.script.run.withSuccessHandler(clubEnrollmentMessage).getUserClub();
+  google.script.run.withSuccessHandler(clubEnrollmentColor).isInClub();
   // create club table
   google.script.run.withSuccessHandler(showClubTable).getClubData();
   document
@@ -48,40 +48,32 @@ function removeLoader() {
   document.getElementById("submitBtnLoader").classList.add("invisible");
 }
 
-function isAlreadyEnrolled(isInClub) {
+function clubEnrollmentColor(alertColor) {
+  console.log('alert color is ' + alertColor);
   let clubFormStatus = document.getElementById('clubAlertNotice');
   let classList = clubFormStatus.classList;
   while (classList.length > 0) {
     classList.remove(classList.item(0));
   }
-  if (isInClub) {
-    clubFormStatus.innerHTML = 'You are already enrolled in ' + isInClub;
-    clubFormStatus.classList.add('alert', 'alert-primary', 'show');
-    isEnrolled = true;
+  clubFormStatus.classList.add('alert', 'show');
+  switch (alertColor) {
+    case true:
+      clubFormStatus.classList.add('alert-primary');
+      break;
+    case false:
+      clubFormStatus.classList.add('alert-warning');
+      break;
+    default:
+      clubFormStatus.classList.add('alert-secondary');
   }
-  else {
-    clubFormStatus.innerHTML = 'Please choose a club from the dropdown.';
-    clubFormStatus.classList.add('alert', 'alert-warning', 'show');
-    isEnrolled = false;
-  }
-  enableSignupBtn();
 }
 
-function clubEnrollmentMessage(clubName) {
+function clubEnrollmentMessage(clubMessage) {
+  console.log('alert message is ' + clubMessage);
   let clubFormStatus = document.getElementById('clubAlertNotice');
-  let classList = clubFormStatus.classList;
-  while (classList.length > 0) {
-    classList.remove(classList.item(0));
-  }
-  if (clubName) {
-    clubFormStatus.innerHTML = 'Welcome to the ' + clubName + ' club';
-    clubFormStatus.classList.add('alert', 'alert-success', 'show');
-    isEnrolled = true;
-    updateClubTable();
-  } else {
-    clubFormStatus.innerHTML = 'Sorry, your choice is already full, please select another option.';
-    clubFormStatus.classList.add('alert', 'alert-danger', 'show');
-  }
+  clubFormStatus.innerHTML = clubMessage
+  isEnrolled = true;
+  updateClubTable();
   enableSignupBtn();
 }
 
@@ -96,7 +88,6 @@ function showUserName(userName) {
   userSchoolNotice.innerHTML = userName;
   // after getting the username and updating the dom, display the NAV
   showNavElements();
-
 }
 
 function clearClubTable() {

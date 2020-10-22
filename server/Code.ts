@@ -26,7 +26,6 @@ function getUserName() {
     let dataValues = [];
     if (isTeacher()) {
         dataValues = staffValues;
-
     }
     else {
         dataValues = studentValues;
@@ -38,16 +37,8 @@ function getUserName() {
     let fullName = firstName + ' ' + lastName;
     return fullName;
 }
-function getUserClub() {
-    let clubEnrollmentValues = getUpdatedClubEnrollmentData();
-    if (isInClub()) {
-        let studentRecCol = (clubEnrollmentValues.findIndex(r => r[1] === getEmail()));
-        let clubName = clubEnrollmentValues[studentRecCol][5];
-        return clubName;
-    }
-}
 function isInClub() {
-    let clubEnrollmentValues = getUpdatedClubEnrollmentData();
+    let clubEnrollmentValues = db.getSheetByName("clubrecord").getDataRange().getValues();
     if ((clubEnrollmentValues.findIndex(r => r[1] === getEmail()) > 0)) {
         return true;
     }
@@ -55,8 +46,22 @@ function isInClub() {
         return false;
     }
 }
+function getUserClub() {
+    let clubEnrollmentValues = db.getSheetByName("clubrecord").getDataRange().getValues();
+    if (isInClub()) {
+        let studentRecCol = (clubEnrollmentValues.findIndex(r => r[1] === getEmail()));
+        let clubName = clubEnrollmentValues[studentRecCol][5];
+        return `You are already enrolled in ${clubName}`;
+    }
+    else if (isTeacher()) {
+        return 'Please see the club lists below for all levels';
+    }
+    else {
+        return 'Please see the club administrator';
+    }
+}
 function getClubData() {
-    let clubValues = getUpdatedClubData();
+    let clubValues = db.getSheetByName("clubs").getDataRange().getValues();
     if (isTeacher()) {
         // if the user is an admin on staff return the whole list.
         // remove the first header row using splice()
@@ -69,19 +74,9 @@ function getClubData() {
         return getSchoolClubData(getSchool(studentValues));
     }
 }
-function getUpdatedClubData() {
-    let getUpdatedclubValues = db.getSheetByName("clubs").getDataRange().getValues();
-    clubValues = getUpdatedclubValues;
-    return clubValues;
-}
 
-function getUpdatedClubEnrollmentData() {
-    let UpdatedClubEnrollmentValues = db.getSheetByName("clubrecord").getDataRange().getValues();
-    clubEnrollmentValues = UpdatedClubEnrollmentValues;
-    return clubEnrollmentValues;
-}
 function getSchoolClubData(school: string) {
-    clubValues = getUpdatedClubData();
+    clubValues = db.getSheetByName("clubs").getDataRange().getValues();
     return clubValues.filter(r => r[6] === school);
 }
 function getClubListBySchool() {

@@ -26,7 +26,7 @@ function getUserName() {
     let dataValues = [];
     if (isTeacher()) {
         dataValues = staffValues;
-        
+
     }
     else {
         dataValues = studentValues;
@@ -58,7 +58,10 @@ function isInClub() {
 function getClubData() {
     let clubValues = getUpdatedClubData();
     if (isTeacher()) {
-        // if the user is an admin on staff
+        // if the user is an admin on staff return the whole list.
+        // remove the first header row using splice()
+        clubValues.splice(0, 1);
+        // return the remaining rows
         return clubValues;
     }
     else {

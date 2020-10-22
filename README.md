@@ -15,7 +15,7 @@ The view is a simple form where the user chooses a club and if the club has room
 ##### Authentication and Authorization
 
 1. Authentication is handled by Google's login.
-2. Authorization is based on the user's level, teacher or student.
+2. Authorization is based on the user's level, teacher or student, which is read from the Spreadsheet.
 
 ##### Data
 
@@ -23,8 +23,8 @@ The view is a simple form where the user chooses a club and if the club has room
    - If an data administrator needs to edit something and they are familiar with a spreadsheet, they can simply open the spreadsheet and make the edits.
    - The sheet has many tabs that mock data a school might track, students, staff, clubs, rooms, classes... it is not complete, but comprehensive enough for data needed in this example app.
 2. **Read**: If the user is a teacher (in the staff tab), they can see the list for the all levels, Lower School (LS), Middle School (MS) and High School (HS), but they don't have an option to join the club. Alternatively, if the user is a student (in the student tab), the table will display the clubs available for their level.
-3. **UI Updating**: Upon login the table will display the clubs for the users with currently club enrollment numbers. If the student is in a club, their previous record is already in the clubRecord tab, they notice will display their club. 
-4. **Write**: When a student successfully enrolls in a club, a row is written to the clubRecord tab and the row includes a time stamp, the student's email address, thier school level, the club moderator (from the club tab), and the name of the chosen club.
+3. **Write**: When a student successfully enrolls in a club, a row is written to the clubRecord tab and the row includes a time stamp, the student's email address, thier school level, the club moderator (from the club tab), and the name of the chosen club.
+4. **UI Update**: Upon login, the club table will display the users relevant clubs with data from the club tab. If the student is already in a club, the notification alert will display their club, and they will be unable to choose another club. 
 
 #### Views and Notification
 

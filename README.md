@@ -14,7 +14,7 @@ The view is a simple form where the user chooses a club and if the club has room
 
 ##### Authentication and Authorization
 
-1. Authentication is handled by Google's login.
+1. Authentication is handled by Google when you login to Google Apps.
 2. Authorization is based on the user's level, teacher or student, which is read from the Spreadsheet.
 
 ##### Data

@@ -137,6 +137,9 @@ function showClubTable(clubResults) {
     for (let c = 1; c < clubResults[r].length; c++) {
       let cell = row.insertCell();
       let text = document.createTextNode(clubResults[r][c]);
+      if (c == 2 || c == 3 || c == 6) {
+        cell.classList.add("text-center");
+      }
       cell.appendChild(text);
     }
   }

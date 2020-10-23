@@ -48,13 +48,13 @@ function isInClub() {
 }
 function getUserClub() {
     let clubEnrollmentValues = db.getSheetByName("clubrecord").getDataRange().getValues();
-    if (isInClub()) {
+    if (isTeacher()) {
+        return 'Please see the available clubs from the list below';
+    }
+    else if (isInClub()) {
         let studentRecCol = (clubEnrollmentValues.findIndex(r => r[1] === getEmail()));
         let clubName = clubEnrollmentValues[studentRecCol][5];
         return `You are already enrolled in ${clubName}`;
-    }
-    else if (isTeacher()) {
-        return 'Please see the club lists below for all levels';
     }
     else {
         return 'Please see the club administrator';
@@ -63,10 +63,7 @@ function getUserClub() {
 function getClubData() {
     let clubValues = db.getSheetByName("clubs").getDataRange().getValues();
     if (isTeacher()) {
-        // if the user is an admin on staff return the whole list.
-        // remove the first header row using splice()
-        clubValues.splice(0, 1);
-        // return the remaining rows
+
         return clubValues;
     }
     else {
@@ -74,13 +71,16 @@ function getClubData() {
         return getSchoolClubData(getSchool(studentValues));
     }
 }
-
 function getSchoolClubData(school: string) {
     clubValues = db.getSheetByName("clubs").getDataRange().getValues();
-    return clubValues.filter(r => r[6] === school);
+    let clubHeader = clubValues.splice(0, 1);
+    let studentClubValues = clubValues.filter(r => r[6] === school);
+    studentClubValues.unshift(clubHeader[0]);
+    return studentClubValues;
 }
 function getClubListBySchool() {
     let clubSchoolData = getSchoolClubData(getSchool(studentValues));
+    clubSchoolData.shift();
     if (clubSchoolData.length > 0) {
         let clubSchoolList = [];
         for (let r = 0; r < clubSchoolData.length; r++) {
@@ -89,6 +89,6 @@ function getClubListBySchool() {
         return clubSchoolList;
     }
     else {
-        return ['No Clubs Available'];
+        return ['Not available for Teachers'];
     }
 }

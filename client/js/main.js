@@ -73,7 +73,6 @@ function clubEnrollmentMessage(clubMessage) {
   let clubFormStatus = document.getElementById('clubAlertNotice');
   clubFormStatus.innerHTML = clubMessage
   isEnrolled = true;
-  updateClubTable();
   enableSignupBtn();
 }
 
@@ -92,6 +91,8 @@ function showUserName(userName) {
 
 function clearClubTable() {
   let clubTableBody = document.getElementById('club-table-body');
+  let clubTableHead = document.getElementById('club-table-head');
+  clubTableHead.deleteRow(0);
   while (clubTableBody.rows.length > 0) {
     clubTableBody.deleteRow(0);
   }
@@ -119,11 +120,21 @@ function updateClubTable() {
 }
 
 function showClubTable(clubResults) {
-  //clearClubTable();
   let clubTableBody = document.getElementById('club-table-body');
+  let clubTableHead = document.getElementById('club-table-head');
+  let tableHeadData = clubResults.splice(0, 1);
+
+  for (let r = 0; r < tableHeadData.length; r++) {
+    let row = clubTableHead.insertRow();
+    for (let c = 1; c < tableHeadData[r].length; c++) {
+      let cell = row.insertCell();
+      let text = document.createTextNode(tableHeadData[r][c]);
+      cell.appendChild(text);
+    }
+  }
   for (let r = 0; r < clubResults.length; r++) {
     let row = clubTableBody.insertRow();
-    for (let c = 1; c < clubResults[r].length - 1; c++) {
+    for (let c = 1; c < clubResults[r].length; c++) {
       let cell = row.insertCell();
       let text = document.createTextNode(clubResults[r][c]);
       cell.appendChild(text);

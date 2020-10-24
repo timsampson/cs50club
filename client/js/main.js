@@ -139,6 +139,14 @@ function showClubTable(clubResults) {
       let text = document.createTextNode(clubResults[r][c]);
       if (c == 2 || c == 3 || c == 6) {
         cell.classList.add("text-center");
+      } else {
+        cell.classList.add("pl-1");
+      }
+      if (clubResults[r][2] >= clubResults[r][3]) {
+        cell.classList.add("table-primary", "border-primary");
+      }
+      if (c == 4) {
+        cell.classList.add("small");
       }
       cell.appendChild(text);
     }

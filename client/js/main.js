@@ -1,20 +1,21 @@
 import 'bootstrap'
 import '../scss/main.scss'
+let isEnrolled = false;
 document.addEventListener('DOMContentLoaded', (event) => {
+  // check if the user is in a club
+  isEnrolled = google.script.run.withSuccessHandler().isInClub();
   // get the proper URL, dev or exec
   google.script.run.withSuccessHandler(displayNav).getScriptURL();
   // create dropdown with the available clubs
-  google.script.run.withSuccessHandler(showClubOptions).getClubListBySchool();
+  google.script.run.withSuccessHandler(showClubOptions).getClubNamesBySchool();
   // run the alert mesage
   google.script.run.withSuccessHandler(clubEnrollmentMessage).getUserClub();
-  google.script.run.withSuccessHandler(clubEnrollmentColor).isInClub();
   // create club table
   google.script.run.withSuccessHandler(showClubTable).getClubData();
   document
     .getElementById('clubAppBtn')
     .addEventListener('click', submitClubApplication);
 });
-let isEnrolled = false;
 // Nav display
 function displayNav(baseURL) {
   document.getElementById('sign-up-link').href = baseURL + '/index';
@@ -49,7 +50,6 @@ function removeLoader() {
 }
 
 function clubEnrollmentColor(alertColor) {
-  console.log('alert color is ' + alertColor);
   let clubFormStatus = document.getElementById('clubAlertNotice');
   let classList = clubFormStatus.classList;
   while (classList.length > 0) {
@@ -57,10 +57,10 @@ function clubEnrollmentColor(alertColor) {
   }
   clubFormStatus.classList.add('alert', 'show');
   switch (alertColor) {
-    case true:
+    case primary:
       clubFormStatus.classList.add('alert-primary');
       break;
-    case false:
+    case warning:
       clubFormStatus.classList.add('alert-warning');
       break;
     default:
@@ -68,13 +68,6 @@ function clubEnrollmentColor(alertColor) {
   }
 }
 
-function clubEnrollmentMessage(clubMessage) {
-  console.log('alert message is ' + clubMessage);
-  let clubFormStatus = document.getElementById('clubAlertNotice');
-  clubFormStatus.innerHTML = clubMessage
-  isEnrolled = true;
-  enableSignupBtn();
-}
 
 function showNavElements() {
   document.getElementById("sign-up-link").classList.remove("invisible");
@@ -89,10 +82,14 @@ function showUserName(userName) {
   showNavElements();
 }
 
-function clearClubTable() {
-  let clubTableBody = document.getElementById('club-table-body');
+function clearClubTableHead() {
   let clubTableHead = document.getElementById('club-table-head');
   clubTableHead.deleteRow(0);
+}
+
+function clearClubTableBody() {
+  showLoader();
+  let clubTableBody = document.getElementById('club-table-body');
   while (clubTableBody.rows.length > 0) {
     clubTableBody.deleteRow(0);
   }
@@ -101,26 +98,32 @@ function clearClubTable() {
 function submitClubApplication() {
   disableSignupBtn();
   let clubFormStatus = document.getElementById('clubAlertNotice');
+  let clubName = document.getElementById("clubChoice").value;
+  let clubHasRoom = google.script.run.clubNameEntry(clubName);
+
   if (isEnrolled) {
     clubFormStatus.innerHTML = 'You are already enrolled in a club';
     clubFormStatus.classList.add('alert', 'alert-warning', 'show');
     enableSignupBtn();
   }
+  else if (clubHasRoom) {
+    // sort out this section
+    google.script.run.withSuccessHandler(clubEnrollmentColor).setRecordClubEntry(clubName);
+    clubFormStatus.innerHTML = `Welcome to the ${clubName} club`;
+    clubFormStatus.classList.add('alert', 'alert-warning', 'show');
+    enableSignupBtn();
+  }
   else {
-    let clubName = document.getElementById("clubChoice").value;
-    google.script.run.withSuccessHandler(clubEnrollmentMessage).setRecordClubEntry(clubName);
+
   }
 }
 
-function updateClubTable() {
-  clearClubTable();
-  showLoader();
-  google.script.run.withSuccessHandler(showClubTable).getClubData();
-  removeLoader();
-}
-
-function showClubTable(clubResults) {
-  let clubTableBody = document.getElementById('club-table-body');
+// function updateClubTableBody() {
+//   clearClubTableBody();
+//   showLoader();
+//   google.script.run.withSuccessHandler(showClubTableBody).getClubData();
+// }
+function showClubTableHeader(clubResults) {
   let clubTableHead = document.getElementById('club-table-head');
   let tableHeadData = clubResults.splice(0, 1);
 
@@ -132,6 +135,12 @@ function showClubTable(clubResults) {
       cell.appendChild(text);
     }
   }
+}
+
+function showClubTableBody(clubResults) {
+  let clubTableBody = document.getElementById('club-table-body');
+  // remove first row
+  clubResults.splice(0, 1)
   for (let r = 0; r < clubResults.length; r++) {
     let row = clubTableBody.insertRow();
     for (let c = 1; c < clubResults[r].length; c++) {

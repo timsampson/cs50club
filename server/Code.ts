@@ -22,29 +22,13 @@ function getSchool(values: any[]) {
         return 'No School Assigned';
     }
 }
-function getUserName() {
-    let dataValues = [];
-    if (isTeacher()) {
-        dataValues = staffValues;
-    }
-    else {
-        dataValues = studentValues;
-    }
+function getUserName(dataValues: any[]) {
     let firstNameCol = getCol(dataValues, 'first_name');
     let lastNameCol = getCol(dataValues, 'last_name');
     let firstName = dataValues[getUserRow(dataValues)][firstNameCol];
     let lastName = dataValues[getUserRow(dataValues)][lastNameCol];
     let fullName = firstName + ' ' + lastName;
     return fullName;
-}
-function isInClub() {
-    let clubEnrollmentValues = db.getSheetByName("clubrecord").getDataRange().getValues();
-    if ((clubEnrollmentValues.findIndex(r => r[1] === getEmail()) > 0)) {
-        return true;
-    }
-    else {
-        return false;
-    }
 }
 function getUserClub() {
     let clubEnrollmentValues = db.getSheetByName("clubrecord").getDataRange().getValues();
@@ -54,10 +38,18 @@ function getUserClub() {
     else if (isInClub()) {
         let studentRecCol = (clubEnrollmentValues.findIndex(r => r[1] === getEmail()));
         let clubName = clubEnrollmentValues[studentRecCol][5];
-        return `You are already enrolled in ${clubName}`;
+        return clubName;
+    } else {
+        return 'Not enrolled';
+    }
+}
+function isInClub() {
+    let clubEnrollmentValues = db.getSheetByName("clubrecord").getDataRange().getValues();
+    if ((clubEnrollmentValues.findIndex(r => r[1] === getEmail()) > 0)) {
+        return true;
     }
     else {
-        return 'Please see the club administrator';
+        return false;
     }
 }
 function getClubData() {
@@ -78,7 +70,7 @@ function getSchoolClubData(school: string) {
     studentClubValues.unshift(clubHeader[0]);
     return studentClubValues;
 }
-function getClubListBySchool() {
+function getClubNamesBySchool() {
     let clubSchoolData = getSchoolClubData(getSchool(studentValues));
     clubSchoolData.shift();
     if (clubSchoolData.length > 0) {
@@ -87,8 +79,5 @@ function getClubListBySchool() {
             clubSchoolList.push(clubSchoolData[r][1]);
         }
         return clubSchoolList;
-    }
-    else {
-        return ['Not available for Teachers'];
     }
 }

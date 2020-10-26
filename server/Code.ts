@@ -1,4 +1,3 @@
-
 function isTeacher() {
     return ((staffValues.findIndex(r => r[1] === getEmail()) > 0));
 }
@@ -22,7 +21,9 @@ function getSchool(values: any[]) {
         return 'No School Assigned';
     }
 }
-function getUserName(dataValues: any[]) {
+
+function getUserName() {
+    let dataValues = (isTeacher()) ? staffValues : studentValues;
     let firstNameCol = getCol(dataValues, 'first_name');
     let lastNameCol = getCol(dataValues, 'last_name');
     let firstName = dataValues[getUserRow(dataValues)][firstNameCol];
@@ -32,37 +33,31 @@ function getUserName(dataValues: any[]) {
 }
 function getUserClub() {
     let clubEnrollmentValues = db.getSheetByName("clubrecord").getDataRange().getValues();
+    let message = '';
     if (isTeacher()) {
-        return 'Please see the available clubs from the list below';
+        message = 'Please see the available clubs from the list below';
     }
     else if (isInClub()) {
         let studentRecCol = (clubEnrollmentValues.findIndex(r => r[1] === getEmail()));
         let clubName = clubEnrollmentValues[studentRecCol][5];
-        return clubName;
-    } else {
-        return 'Not enrolled';
+        message = clubName;
     }
+    else {
+        message = 'Not enrolled';
+    }
+    return message;
 }
 function isInClub() {
     let clubEnrollmentValues = db.getSheetByName("clubrecord").getDataRange().getValues();
-    if ((clubEnrollmentValues.findIndex(r => r[1] === getEmail()) > 0)) {
-        return true;
-    }
-    else {
-        return false;
-    }
+    let isEnrolledInclub = (clubEnrollmentValues.findIndex(r => r[1] === getEmail()) > 0);
+    return isEnrolledInclub;
 }
-function getClubData() {
-    let clubValues = db.getSheetByName("clubs").getDataRange().getValues();
-    if (isTeacher()) {
 
-        return clubValues;
-    }
-    else {
-        // only return the clubs for the users school level
-        return getSchoolClubData(getSchool(studentValues));
-    }
+function getClubData() {
+    clubValues = db.getSheetByName("clubs").getDataRange().getValues();
+    return (isTeacher() ? clubValues : getSchoolClubData(getSchool(studentValues)));
 }
+
 function getSchoolClubData(school: string) {
     clubValues = db.getSheetByName("clubs").getDataRange().getValues();
     let clubHeader = clubValues.splice(0, 1);

@@ -13,7 +13,7 @@ function getClubDetailsRow(clubNameEntry: string) {
     return clubSchoolData.filter(r => r[1] === clubNameEntry);
 }
 
-function clubHasRoom(clubNameEntry: string) {
+function clubHasCapacity(clubNameEntry: string) {
     let clubDetailsRow = getClubDetailsRow(clubNameEntry);
     //return clubDetails;
     // need to check the club has room available for the student's level 

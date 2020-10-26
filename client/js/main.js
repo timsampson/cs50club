@@ -1,15 +1,13 @@
 import 'bootstrap'
 import '../scss/main.scss'
-let isEnrolled = false;
 document.addEventListener('DOMContentLoaded', (event) => {
-  // check if the user is in a club
-  isEnrolled = google.script.run.withSuccessHandler().isInClub();
   // get the proper URL, dev or exec
-  google.script.run.withSuccessHandler(displayNav).getScriptURL();
+  google.script.run.withSuccessHandler(showLinks).getScriptURL();
+  // get the proper URL, dev or exec
+  google.script.run.withSuccessHandler(showUserName).getUserName();
   // create dropdown with the available clubs
   google.script.run.withSuccessHandler(showClubOptions).getClubNamesBySchool();
-  // run the alert mesage
-  google.script.run.withSuccessHandler(clubEnrollmentMessage).getUserClub();
+  google.script.run.withSuccessHandler(checkEnrollment).isInClub();
   // create club table
   google.script.run.withSuccessHandler(showClubTable).getClubData();
   document
@@ -17,26 +15,27 @@ document.addEventListener('DOMContentLoaded', (event) => {
     .addEventListener('click', submitClubApplication);
 });
 // Nav display
-function displayNav(baseURL) {
+function showLinks(baseURL) {
   document.getElementById('sign-up-link').href = baseURL + '/index';
   document.getElementById('sign-up-brand').href = baseURL;
-  // display users' name
-  google.script.run.withSuccessHandler(showUserName).getUserName();
+  document.getElementById("sign-up-link").classList.remove("invisible");
+  document.getElementById("sign-up-brand").classList.remove("invisible");
+}
+
+function showUserName(userName) {
+  let userSchoolNotice = document.getElementById('signedInName');
+  userSchoolNotice.innerHTML = userName;
+  document.getElementById("signedInName").classList.remove("invisible");
 }
 
 // enable the signup button
 function enableSignupBtn() {
   document.getElementById("clubAppBtn").removeAttribute("disabled");
 }
+
 // disable the signup button 
 function disableSignupBtn() {
   document.getElementById("clubAppBtn").setAttribute("disabled", "true");
-}
-
-// loader button and table display
-function showUserName(userName) {
-  let userSchoolNotice = document.getElementById('signedInName');
-  userSchoolNotice.innerHTML = userName;
 }
 
 function showLoader() {
@@ -57,29 +56,55 @@ function clubEnrollmentColor(alertColor) {
   }
   clubFormStatus.classList.add('alert', 'show');
   switch (alertColor) {
-    case primary:
+    case 'primary':
       clubFormStatus.classList.add('alert-primary');
       break;
-    case warning:
+    case 'warning':
       clubFormStatus.classList.add('alert-warning');
       break;
     default:
       clubFormStatus.classList.add('alert-secondary');
   }
 }
-
-
-function showNavElements() {
-  document.getElementById("sign-up-link").classList.remove("invisible");
-  document.getElementById("signedInName").classList.remove("invisible");
-  document.getElementById("sign-up-brand").classList.remove("invisible");
+function checkEnrollment(isEnrolled) {
+  // run the alert mesage
+  if (isEnrolled) {
+    google.script.run.withSuccessHandler(clubEnrollmentWelcome).getUserClub();
+    function clubEnrollmentWelcome(usersClub) {
+      let message = `You are in the the ${usersClub} club`;
+      clubEnrollmentMessage(message);
+      clubEnrollmentColor('primary');
+    }
+  }
 }
 
-function showUserName(userName) {
-  let userSchoolNotice = document.getElementById('signedInName');
-  userSchoolNotice.innerHTML = userName;
-  // after getting the username and updating the dom, display the NAV
-  showNavElements();
+
+function clubEnrollmentMessage(message) {
+  let clubFormStatus = document.getElementById('clubAlertNotice');
+  clubFormStatus.innerHTML = message;
+}
+
+function submitClubApplication() {
+  disableSignupBtn();
+  let clubName = document.getElementById("clubChoice").value;
+  let clubHasSpace = google.script.run.clubHasCapacity(clubName);
+  let isEnrolled = google.script.run.withSuccessHandler().isInClub();
+
+  if (isEnrolled) {
+    clubEnrollmentMessage('You are already enrolled in a club');
+    clubEnrollmentColor('warning');
+  }
+  else if (clubHasSpace) {
+    google.script.run.withSuccessHandler(clubEnrollmentColor).setRecordClubEntry(clubName);
+    let message = `Welcome to the ${clubName} club`;
+    clubEnrollmentMessage(message);
+    clubEnrollmentColor('warning');
+  }
+  else {
+    clubEnrollmentMessage('Please contact the club Administrator');
+    clubEnrollmentColor('warning');
+  }
+  enableSignupBtn();
 }
 
 function clearClubTableHead() {
@@ -94,39 +119,14 @@ function clearClubTableBody() {
     clubTableBody.deleteRow(0);
   }
 }
-
-function submitClubApplication() {
-  disableSignupBtn();
-  let clubFormStatus = document.getElementById('clubAlertNotice');
-  let clubName = document.getElementById("clubChoice").value;
-  let clubHasRoom = google.script.run.clubNameEntry(clubName);
-
-  if (isEnrolled) {
-    clubFormStatus.innerHTML = 'You are already enrolled in a club';
-    clubFormStatus.classList.add('alert', 'alert-warning', 'show');
-    enableSignupBtn();
-  }
-  else if (clubHasRoom) {
-    // sort out this section
-    google.script.run.withSuccessHandler(clubEnrollmentColor).setRecordClubEntry(clubName);
-    clubFormStatus.innerHTML = `Welcome to the ${clubName} club`;
-    clubFormStatus.classList.add('alert', 'alert-warning', 'show');
-    enableSignupBtn();
-  }
-  else {
-
-  }
+function showClubTable(clubResults) {
+  let clubHeader = clubResults.slice(0, 1);
+  showClubTableHeader(clubHeader);
+  showClubTableBody(clubResults);
 }
 
-// function updateClubTableBody() {
-//   clearClubTableBody();
-//   showLoader();
-//   google.script.run.withSuccessHandler(showClubTableBody).getClubData();
-// }
-function showClubTableHeader(clubResults) {
+function showClubTableHeader(tableHeadData) {
   let clubTableHead = document.getElementById('club-table-head');
-  let tableHeadData = clubResults.splice(0, 1);
-
   for (let r = 0; r < tableHeadData.length; r++) {
     let row = clubTableHead.insertRow();
     for (let c = 1; c < tableHeadData[r].length; c++) {
@@ -135,23 +135,23 @@ function showClubTableHeader(clubResults) {
       cell.appendChild(text);
     }
   }
+  removeLoader();
 }
 
 function showClubTableBody(clubResults) {
+  let clubBody = clubResults.slice(1, clubResults.length);
   let clubTableBody = document.getElementById('club-table-body');
-  // remove first row
-  clubResults.splice(0, 1)
-  for (let r = 0; r < clubResults.length; r++) {
+  for (let r = 0; r < clubBody.length; r++) {
     let row = clubTableBody.insertRow();
-    for (let c = 1; c < clubResults[r].length; c++) {
+    for (let c = 1; c < clubBody[r].length; c++) {
       let cell = row.insertCell();
-      let text = document.createTextNode(clubResults[r][c]);
+      let text = document.createTextNode(clubBody[r][c]);
       if (c == 2 || c == 3 || c == 6) {
         cell.classList.add("text-center");
       } else {
         cell.classList.add("pl-1");
       }
-      if (clubResults[r][2] >= clubResults[r][3]) {
+      if (clubBody[r][2] >= clubBody[r][3]) {
         cell.classList.add("table-primary", "border-primary");
       }
       if (c == 4) {

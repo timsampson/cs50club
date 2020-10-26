@@ -71,13 +71,16 @@ function checkEnrollment(isEnrolled) {
   if (isEnrolled) {
     google.script.run.withSuccessHandler(clubEnrollmentWelcome).getUserClub();
     function clubEnrollmentWelcome(usersClub) {
-      let message = `You are in the the ${usersClub} club`;
+      let message = `You are in currently in the the ${usersClub} club`;
       clubEnrollmentMessage(message);
       clubEnrollmentColor('primary');
     }
+  } else {
+    let message = `Please choose a club from the list.`;
+    clubEnrollmentMessage(message);
+    clubEnrollmentColor('warning');
   }
 }
-
 
 function clubEnrollmentMessage(message) {
   let clubFormStatus = document.getElementById('clubAlertNotice');
@@ -88,22 +91,23 @@ function submitClubApplication() {
   disableSignupBtn();
   let clubName = document.getElementById("clubChoice").value;
   let clubHasSpace = google.script.run.clubHasCapacity(clubName);
-  let isEnrolled = google.script.run.withSuccessHandler().isInClub();
+  google.script.run.withSuccessHandler(clubApplication).isInClub();
+  function clubApplication(isEnrolled) {
+    if (isEnrolled) {
+      checkEnrollment(isEnrolled);
+    }
+    else if (clubHasSpace) {
+      google.script.run.withSuccessHandler(clubEnrollmentColor).setRecordClubEntry(clubName);
+      let message = `Welcome to the ${clubName} club`;
+      clubEnrollmentMessage(message);
+      clubEnrollmentColor('warning');
+    }
+    else {
+      clubEnrollmentMessage('Sorry, your club choice is full, please choose another option.');
+      clubEnrollmentColor('warning');
+    }
+  }
 
-  if (isEnrolled) {
-    clubEnrollmentMessage('You are already enrolled in a club');
-    clubEnrollmentColor('warning');
-  }
-  else if (clubHasSpace) {
-    google.script.run.withSuccessHandler(clubEnrollmentColor).setRecordClubEntry(clubName);
-    let message = `Welcome to the ${clubName} club`;
-    clubEnrollmentMessage(message);
-    clubEnrollmentColor('warning');
-  }
-  else {
-    clubEnrollmentMessage('Please contact the club Administrator');
-    clubEnrollmentColor('warning');
-  }
   enableSignupBtn();
 }
 
@@ -152,7 +156,7 @@ function showClubTableBody(clubResults) {
         cell.classList.add("pl-1");
       }
       if (clubBody[r][2] >= clubBody[r][3]) {
-        cell.classList.add("table-primary", "border-primary");
+        cell.classList.add("table-danger", "border-primary");
       }
       if (c == 4) {
         cell.classList.add("small");

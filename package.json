@@ -22,10 +22,13 @@
   "keywords": [
     "AppScript",
     "Web",
-    "V8"
+    "V8",
+    "sheets",
+    "Parcel",
+    "forms"
   ],
   "author": "Tim Sampson",
   "license": "MIT",
   "repository": "https://github.com/timsampson/cs50form",
-  "private": true
+  "private": "false"
 }

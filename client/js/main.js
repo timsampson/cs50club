@@ -30,12 +30,12 @@ function showUserName(userName) {
 
 // enable the signup button
 function enableSignupBtn() {
-  document.getElementById("clubAppBtn").removeAttribute("disabled");
+  document.getElementById("clubAppBtn").disabled = false;
 }
 
 // disable the signup button 
 function disableSignupBtn() {
-  document.getElementById("clubAppBtn").setAttribute("disabled", "true");
+  document.getElementById("clubAppBtn").disabled = true;
 }
 
 function showLoader() {
@@ -61,6 +61,9 @@ function clubEnrollmentColor(alertColor) {
       break;
     case 'warning':
       clubFormStatus.classList.add('alert-warning');
+      break;
+    case 'success':
+      clubFormStatus.classList.add('alert-success');
       break;
     default:
       clubFormStatus.classList.add('alert-secondary');
@@ -90,27 +93,38 @@ function clubEnrollmentMessage(message) {
 function submitClubApplication() {
   disableSignupBtn();
   let clubName = document.getElementById("clubChoice").value;
-  let clubHasSpace = google.script.run.clubHasCapacity(clubName);
-  google.script.run.withSuccessHandler(clubApplication).isInClub();
-  function clubApplication(isEnrolled) {
-    if (isEnrolled) {
-      checkEnrollment(isEnrolled);
-    }
-    else if (clubHasSpace) {
-      google.script.run.withSuccessHandler(clubEnrollmentColor).setRecordClubEntry(clubName);
-      let message = `Welcome to the ${clubName} club`;
-      clubEnrollmentMessage(message);
-      clubEnrollmentColor('warning');
-    }
-    else {
-      clubEnrollmentMessage('Sorry, your club choice is full, please choose another option.');
-      clubEnrollmentColor('warning');
-    }
-  }
-
-  enableSignupBtn();
+  google.script.run.withSuccessHandler(setTheClubEntry).clubHasCapacity(clubName);
 }
 
+function setTheClubEntry(clubHasCapacity) {
+  console.log(clubHasCapacity.available);
+  console.log(clubHasCapacity.club);
+  if (clubHasCapacity.available) {
+    google.script.run.setRecordClubEntry(clubHasCapacity.clubName);
+    google.script.run.withSuccessHandler(finishRecordDisplay).isInClub();
+    finishRecordDisplay(finished);
+  } else {
+    clubEnrollmentMessage('Sorry, your club choice is full, please choose another option.');
+    clubEnrollmentColor('warning');
+  }
+  removeLoader();
+  enableSignupBtn();
+}
+function finishRecordDisplay(finished) {
+  let message = `Welcome to the ${clubName} club`;
+  clubEnrollmentMessage(message);
+  clubEnrollmentColor('success');
+  clearClubTableBody();
+  showLoader();
+  if (finished) {
+    google.script.run.withSuccessHandler(showClubTableBody).getClubData();
+  }
+  else {
+    google.script.run.withSuccessHandler(finishRecordDisplay).isInClub();
+  }
+  removeLoader();
+  enableSignupBtn();
+}
 function clearClubTableHead() {
   let clubTableHead = document.getElementById('club-table-head');
   clubTableHead.deleteRow(0);

@@ -53,13 +53,15 @@ function isInClub() {
     return isEnrolledInclub;
 }
 
+function getUpdatedClubValues() {
+    return db.getSheetByName("clubs").getDataRange().getValues();
+}
 function getClubData() {
-    clubValues = db.getSheetByName("clubs").getDataRange().getValues();
-    return (isTeacher() ? clubValues : getSchoolClubData(getSchool(studentValues)));
+    return (isTeacher() ? getUpdatedClubValues() : getSchoolClubData(getSchool(studentValues)));
 }
 
 function getSchoolClubData(school: string) {
-    clubValues = db.getSheetByName("clubs").getDataRange().getValues();
+    clubValues = getUpdatedClubValues();
     let clubHeader = clubValues.splice(0, 1);
     let studentClubValues = clubValues.filter(r => r[6] === school);
     studentClubValues.unshift(clubHeader[0]);

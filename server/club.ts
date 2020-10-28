@@ -19,6 +19,10 @@ function clubHasCapacity(clubNameEntry: string) {
     // need to check the club has room available for the student's level 
     let capacity = clubDetailsRow[0][3];
     let enrolled = clubDetailsRow[0][2];
-    return (capacity > enrolled);
+    let clubHasCapacity = {
+        available: (capacity > enrolled);,
+        club: clubNameEntry
+    }
+    return clubHasCapacity;
 }
 

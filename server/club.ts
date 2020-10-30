@@ -20,7 +20,7 @@ function clubHasCapacity(clubNameEntry: string) {
     let capacity = clubDetailsRow[0][3];
     let enrolled = clubDetailsRow[0][2];
     let clubHasCapacity = {
-        available: (capacity > enrolled);,
+        available: (capacity > enrolled),
         club: clubNameEntry
     }
     return clubHasCapacity;

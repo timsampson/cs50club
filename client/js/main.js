@@ -96,13 +96,11 @@ function submitClubApplication() {
   google.script.run.withSuccessHandler(setTheClubEntry).clubHasCapacity(clubName);
 }
 
-function setTheClubEntry(clubHasCapacity) {
-  console.log(clubHasCapacity.available);
-  console.log(clubHasCapacity.club);
-  if (clubHasCapacity.available) {
-    google.script.run.setRecordClubEntry(clubHasCapacity.clubName);
-    google.script.run.withSuccessHandler(finishRecordDisplay).isInClub();
-    finishRecordDisplay(finished);
+function setTheClubEntry(clubInfo) {
+  console.log(clubInfo.available);
+  console.log(clubInfo.club);
+  if (clubInfo.available) {
+    google.script.run.setRecordClubEntry(clubInfo.clubName);
   } else {
     clubEnrollmentMessage('Sorry, your club choice is full, please choose another option.');
     clubEnrollmentColor('warning');

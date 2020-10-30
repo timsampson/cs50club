@@ -22,6 +22,17 @@ function getSchool(values: any[]) {
     }
 }
 
+function getSuPageUIdata() {
+    let suPageUIdata = {
+        scriptURL: getScriptURL(),
+        userName: getUserName(),
+        clubNamesBySchool: getClubNamesBySchool(),
+        isInClub: isInClub(),
+        clubData: getClubData(),
+    }
+    return suPageUIdata;
+}
+
 function getUserName() {
     let dataValues = (isTeacher()) ? staffValues : studentValues;
     let firstNameCol = getCol(dataValues, 'first_name');

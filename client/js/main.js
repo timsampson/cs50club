@@ -1,20 +1,21 @@
 import 'bootstrap'
 import '../scss/main.scss'
 document.addEventListener('DOMContentLoaded', (event) => {
-  // get the proper URL, dev or exec
-  google.script.run.withSuccessHandler(showLinks).getScriptURL();
-  // get the proper URL, dev or exec
-  google.script.run.withSuccessHandler(showUserName).getUserName();
-  // create dropdown with the available clubs
-  google.script.run.withSuccessHandler(showClubOptions).getClubNamesBySchool();
-  google.script.run.withSuccessHandler(checkEnrollment).isInClub();
-  // create club table
-  google.script.run.withSuccessHandler(showClubTable).getClubData();
+  // fetchInitial page data for signup page
+  google.script.run.withSuccessHandler(updateSignupPageUI).getSuPageUIdata();
+
   document
     .getElementById('clubAppBtn')
     .addEventListener('click', submitClubApplication);
 });
-// Nav display
+// Nav 
+function updateSignupPageUI(suPageUIdata) {
+  showLinks(suPageUIdata.scriptURL);
+  showUserName(suPageUIdata.userName);
+  showClubOptions(suPageUIdata.clubNamesBySchool);
+  checkEnrollment(suPageUIdata.isInClub);
+  showClubTable(suPageUIdata.clubData);
+}
 function showLinks(baseURL) {
   document.getElementById('sign-up-link').href = baseURL + '/index';
   document.getElementById('sign-up-brand').href = baseURL;
@@ -101,12 +102,15 @@ function setTheClubEntry(clubInfo) {
   console.log(clubInfo.club);
   if (clubInfo.available) {
     google.script.run.setRecordClubEntry(clubInfo.clubName);
+    removeLoader();
+    enableSignupBtn();
   } else {
     clubEnrollmentMessage('Sorry, your club choice is full, please choose another option.');
     clubEnrollmentColor('warning');
+    removeLoader();
+    enableSignupBtn();
   }
-  removeLoader();
-  enableSignupBtn();
+
 }
 function finishRecordDisplay(finished) {
   let message = `Welcome to the ${clubName} club`;

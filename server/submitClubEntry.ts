@@ -11,9 +11,8 @@ let clubApp: {
 }
 
 function setRecordClubEntry(clubNameEntry: string) {
-    clubApp = {
+    let clubApp = {
         clubName: clubNameEntry,
-        updateDate: new Date(),
         stuName: getUserName(),
         studentSchool: getSchool(studentValues),
         stuEmail: getEmail(),
@@ -25,17 +24,18 @@ function setRecordClubEntry(clubNameEntry: string) {
     if (clubApp.clubHasRoom) {
         sendEmailNotice(clubApp);
         clubApp.recordUpdated = true;
-        logClubApp();
+        logClubApp(clubApp);
         return clubApp;
     }
     else {
         //clubApp.recordUpdated = false;
-        return clubApp;
+        return this.clubApp;
     }
 }
-function logClubApp() {
+function logClubApp(clubApp) {
+    let updateTime = new Date();
     clubEnrollmentSheet.appendRow([
-        clubApp.updateDate,
+        updateTime,
         clubApp.stuEmail,
         clubApp.stuName,
         clubApp.studentSchool,

@@ -9,13 +9,15 @@ document.addEventListener('DOMContentLoaded', (event) => {
     .getElementById('clubAppBtn')
     .addEventListener('click', submitClubApplication);
 });
-// Nav 
+
+let clubTableData;
 function updateSignupPageUI(suPageUIdata) {
   showLinks(suPageUIdata.scriptURL);
   showUserName(suPageUIdata.userName);
   showClubOptions(suPageUIdata.clubNamesBySchool);
   checkEnrollment(suPageUIdata);
-  showClubTable(suPageUIdata.clubData);
+  clubTableData = suPageUIdata.clubData;
+  showClubTable(clubTableData);
 }
 function showLinks(baseURL) {
   document.getElementById('sign-up-link').href = baseURL + '/index';
@@ -110,7 +112,8 @@ function signUpReponse(clubApp) {
     let message = `Welcome to the ${clubApp.appliedClub} club.`;
     clubEnrollmentMessage(message);
     clubEnrollmentColor('success');
-    updateClubTableBody(clubApp.appliedClub);
+    clearClubTableBody();
+    showClubTableBody(clubTableData, true, clubApp.appliedClub);
   } else {
     let message = `Sorry, the ${clubApp.appliedClub} club is full, please choose another.`;
     clubEnrollmentMessage(message);
@@ -134,24 +137,9 @@ function clearClubTableBody() {
 function showClubTable(clubResults) {
   let clubHeader = clubResults.slice(0, 1);
   showClubTableHeader(clubHeader);
-  showClubTableBody(clubResults);
+  showClubTableBody(clubResults, false);
 }
 
-function updateClubTableBody(clubName) {
-  console.log(`updateClubTable function ${clubName}`);
-  let clubTableBody = document.getElementById('club-table-body');
-  for (let r = 0; r < clubTableBody.length; r++) {
-    for (let c = 1; c < clubTableBody[r].length; c++) {
-      let cell = clubTableBody[r][c].innerHTML;
-      console.log(cell);
-      if (cell.equals(clubName)) {
-        let cellValue = clubTableBody[r][1].innerHTML;
-        clubTableBody[r][1].innerHTML = cellValue + 1;
-        console.log(`Cell updated to ${cellValue + 1}`);
-      }
-    }
-  }
-}
 function showClubTableHeader(tableHeadData) {
   let clubTableHead = document.getElementById('club-table-head');
   for (let r = 0; r < tableHeadData.length; r++) {
@@ -165,13 +153,19 @@ function showClubTableHeader(tableHeadData) {
   removeLoader();
 }
 
-function showClubTableBody(clubResults) {
+function showClubTableBody(clubResults, update, clubName) {
   let clubBody = clubResults.slice(1, clubResults.length);
   let clubTableBody = document.getElementById('club-table-body');
   for (let r = 0; r < clubBody.length; r++) {
     let row = clubTableBody.insertRow();
     for (let c = 1; c < clubBody[r].length; c++) {
       let cell = row.insertCell();
+      if (update == true && clubBody[r][c] == clubName) {
+        let enrolled = clubBody[r][2];
+        enrolled++;
+        clubBody[r][2] = enrolled;
+        console.log(enrolled);
+      }
       let text = document.createTextNode(clubBody[r][c]);
       if (c == 2 || c == 3 || c == 6) {
         cell.classList.add("text-center");

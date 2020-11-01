@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
     "lib": [
-      "esnext"
+      "esnext",
+      "DOM"
     ],
-    "target": "esnext",
+    "target": "ESNext",
     "experimentalDecorators": true
   }
 }

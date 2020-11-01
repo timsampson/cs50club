@@ -106,12 +106,11 @@ function signUpReponse(clubApp) {
     let message = `You are already enrolled in the ${clubApp.clubName} club.`;
     clubEnrollmentMessage(message);
     clubEnrollmentColor('danger');
-    updateClubTableBody(clubApp.currentClub);
   } else if (clubApp.recordUpdated) {
     let message = `Welcome to the ${clubApp.appliedClub} club.`;
     clubEnrollmentMessage(message);
     clubEnrollmentColor('success');
-    updateClubTableBody(clubApp.clubName);
+    updateClubTableBody(clubApp.appliedClub);
   } else {
     let message = `Sorry, the ${clubApp.appliedClub} club is full, please choose another.`;
     clubEnrollmentMessage(message);
@@ -139,6 +138,7 @@ function showClubTable(clubResults) {
 }
 
 function updateClubTableBody(clubName) {
+  console.log(`updateClubTable function ${clubName}`);
   let clubTableBody = document.getElementById('club-table-body');
   for (let r = 0; r < clubTableBody.length; r++) {
     for (let c = 1; c < clubTableBody[r].length; c++) {

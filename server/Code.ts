@@ -27,7 +27,9 @@ function getSuPageUIdata() {
         scriptURL: getScriptURL(),
         userName: getUserName(),
         clubNamesBySchool: getClubNamesBySchool(),
+        isTeacher: isTeacher(),
         isInClub: isInClub(),
+        clubMembershipName: getUserClub(),
         clubData: getClubData(),
     }
     return suPageUIdata;
@@ -45,10 +47,7 @@ function getUserName() {
 function getUserClub() {
     let clubEnrollmentValues = db.getSheetByName("clubrecord").getDataRange().getValues();
     let message = '';
-    if (isTeacher()) {
-        message = 'Please see the available clubs from the list below';
-    }
-    else if (isInClub()) {
+    if (isInClub()) {
         let studentRecCol = (clubEnrollmentValues.findIndex(r => r[1] === getEmail()));
         let clubName = clubEnrollmentValues[studentRecCol][5];
         message = clubName;

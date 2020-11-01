@@ -13,7 +13,7 @@ function updateSignupPageUI(suPageUIdata) {
   showLinks(suPageUIdata.scriptURL);
   showUserName(suPageUIdata.userName);
   showClubOptions(suPageUIdata.clubNamesBySchool);
-  checkEnrollment(suPageUIdata.isInClub);
+  checkEnrollment(suPageUIdata);
   showClubTable(suPageUIdata.clubData);
 }
 function showLinks(baseURL) {
@@ -70,15 +70,16 @@ function clubEnrollmentColor(alertColor) {
       clubFormStatus.classList.add('alert-secondary');
   }
 }
-function checkEnrollment(isEnrolled) {
+function checkEnrollment(suPageUIdata) {
   // run the alert mesage
-  if (isEnrolled) {
-    google.script.run.withSuccessHandler(clubEnrollmentWelcome).getUserClub();
-    function clubEnrollmentWelcome(usersClub) {
-      let message = `You are in currently in the the ${usersClub} club`;
-      clubEnrollmentMessage(message);
-      clubEnrollmentColor('primary');
-    }
+  if (suPageUIdata.isInClub) {
+    let message = `You are in currently in the the ${suPageUIdata.clubMembershipName} club`;
+    clubEnrollmentMessage(message);
+    clubEnrollmentColor('primary');
+  } else if (suPageUIdata.isTeacher) {
+    let message = `Hello Teacher ${suPageUIdata.userName}, please see the club enrollment lists below.`;
+    clubEnrollmentMessage(message);
+    clubEnrollmentColor('success');
   } else {
     let message = `Please choose a club from the list.`;
     clubEnrollmentMessage(message);
@@ -94,39 +95,24 @@ function clubEnrollmentMessage(message) {
 function submitClubApplication() {
   disableSignupBtn();
   let clubName = document.getElementById("clubChoice").value;
-  google.script.run.withSuccessHandler(setTheClubEntry).clubHasCapacity(clubName);
+  console.log(clubName);
+  google.script.run.withSuccessHandler(updateSignUpUI).setRecordClubEntry(clubName);
 }
 
-function setTheClubEntry(clubInfo) {
-  console.log(clubInfo.available);
-  console.log(clubInfo.club);
-  if (clubInfo.available) {
-    google.script.run.setRecordClubEntry(clubInfo.clubName);
-    removeLoader();
-    enableSignupBtn();
+function updateSignUpUI(clubApp) {
+  console.log(clubApp);
+  if (clubApp.recordUpdated) {
+    let message = `Welcome to the ${clubApp.clubName} .`;
+    clubEnrollmentMessage(message);
+    clubEnrollmentColor('success');
+    updateClubTableBody(clubApp.clubName);
   } else {
-    clubEnrollmentMessage('Sorry, your club choice is full, please choose another option.');
-    clubEnrollmentColor('warning');
-    removeLoader();
-    enableSignupBtn();
+    let message = `Sorry, the ${clubApp.clubName} club is full, please choose another.`;
+    clubEnrollmentMessage(message);
+    clubEnrollmentColor('danger');
   }
+}
 
-}
-function finishRecordDisplay(finished) {
-  let message = `Welcome to the ${clubName} club`;
-  clubEnrollmentMessage(message);
-  clubEnrollmentColor('success');
-  clearClubTableBody();
-  showLoader();
-  if (finished) {
-    google.script.run.withSuccessHandler(showClubTableBody).getClubData();
-  }
-  else {
-    google.script.run.withSuccessHandler(finishRecordDisplay).isInClub();
-  }
-  removeLoader();
-  enableSignupBtn();
-}
 function clearClubTableHead() {
   let clubTableHead = document.getElementById('club-table-head');
   clubTableHead.deleteRow(0);
@@ -145,6 +131,19 @@ function showClubTable(clubResults) {
   showClubTableBody(clubResults);
 }
 
+function updateClubTableBody(clubName) {
+  let clubTableBody = document.getElementById('club-table-body');
+  for (let r = 0; r < clubTableBody.length; r++) {
+    for (let c = 1; c < clubTableBody[r].length; c++) {
+      let cell = clubTableBody[r][c].innerHTML;
+      if (cell.equals(clubName)) {
+        let cellValue = clubTableBody[r][1].innerHTML;
+        clubTableBody[r][1].innerHTML = cellValue + 1;
+        console.log(`Cell updated to ${cellValue + 1}`);
+      }
+    }
+  }
+}
 function showClubTableHeader(tableHeadData) {
   let clubTableHead = document.getElementById('club-table-head');
   for (let r = 0; r < tableHeadData.length; r++) {

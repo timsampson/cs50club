@@ -1,26 +1,30 @@
 function setRecordClubEntry(clubNameEntry: string) {
-    if (clubHasCapacity(clubNameEntry)) {
-        const currentDate = new Date();
-        const clubApplication = {
-            clubName: clubNameEntry,
-            stuName: getUserName(),
-            studentSchool: getSchool(studentValues),
-            stuEmail: getEmail(),
-            clubDetails: getClubDetails(getClubDetailsRow(clubNameEntry)),
-            clubModerator: getClubModerator(getClubDetailsRow(clubNameEntry)),
-        };
+    let clubApp = {
+        clubName: clubNameEntry,
+        updateDate: new Date(),
+        stuName: getUserName(),
+        studentSchool: getSchool(studentValues),
+        stuEmail: getEmail(),
+        clubHasRoom: clubHasCapacity(clubNameEntry),
+        clubDetails: getClubDetailsRow(clubNameEntry),
+        clubModerator: getClubModerator(clubNameEntry),
+        recordUpdated: false,
+    }
+    if (clubApp.clubHasRoom) {
         clubEnrollmentSheet.appendRow([
-            currentDate,
-            clubApplication.stuEmail,
-            clubApplication.stuName,
-            clubApplication.studentSchool,
-            clubApplication.clubModerator,
-            clubApplication.clubName
+            clubApp.updateDate,
+            clubApp.stuEmail,
+            clubApp.stuName,
+            clubApp.studentSchool,
+            clubApp.clubModerator,
+            clubApp.clubName
         ]);
-        sendEmailNotice(clubApplication);
-        return true;
+        sendEmailNotice(clubApp);
+        clubApp.recordUpdated = true;
+        return clubApp;
     }
     else {
-        return false;
+        clubApp.recordUpdated = false;
+        return clubApp;
     }
 }

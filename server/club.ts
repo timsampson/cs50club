@@ -1,13 +1,3 @@
-function getClubDetails(clubNameEntry: string) {
-    let clubDetailsRow = getClubDetailsRow(clubNameEntry);
-    return clubDetailsRow[0][5];
-}
-
-function getClubModerator(clubNameEntry: string) {
-    let clubDetailsRow = getClubDetailsRow(clubNameEntry);
-    return clubDetailsRow[0][4];
-}
-
 function getClubDetailsRow(clubNameEntry: string) {
     const studentSchool = getSchool(studentValues);
     // gets the list of clubs for the current students school.
@@ -15,10 +5,26 @@ function getClubDetailsRow(clubNameEntry: string) {
     return clubSchoolData.filter(r => r[1] === clubNameEntry);
 }
 
+function getClubDetails(clubNameEntry: string) {
+    let clubRow = getClubDetailsRow(clubNameEntry);
+    let clubDetails: string;
+    clubDetails = clubRow[0][5];
+    return clubDetails;
+}
+
+function getClubModerator(clubNameEntry: string) {
+    let clubRow = getClubDetailsRow(clubNameEntry);
+    let clubModerator: string;
+    clubModerator = clubRow[0][4];
+    return clubModerator;
+}
+
+
+
 function clubHasCapacity(clubNameEntry: string) {
-    let clubDetailsRow = getClubDetailsRow(clubNameEntry);
-    let capacity = clubDetailsRow[0][3];
-    let enrolled = clubDetailsRow[0][2];
+    let clubRow = getClubDetailsRow(clubNameEntry);
+    let capacity = clubRow[0][3];
+    let enrolled = clubRow[0][2];
     return (capacity > enrolled);
 }
 

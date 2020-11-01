@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
   // fetchInitial page data for signup page
   google.script.run.withSuccessHandler(updateSignupPageUI).getSuPageUIdata();
 
+
   document
     .getElementById('clubAppBtn')
     .addEventListener('click', submitClubApplication);
@@ -95,22 +96,23 @@ function clubEnrollmentMessage(message) {
 function submitClubApplication() {
   disableSignupBtn();
   let clubName = document.getElementById("clubChoice").value;
-  console.log(clubName);
-  google.script.run.withSuccessHandler(updateSignUpUI).setRecordClubEntry(clubName);
+  google.script.run.withSuccessHandler(signUpReponse).setRecordClubEntry(clubName);
+
 }
 
-function updateSignUpUI(clubApp) {
-  console.log(clubApp);
-  if (clubApp.recordUpdated) {
-    let message = `Welcome to the ${clubApp.clubName} .`;
+
+function signUpReponse(clubApp) {
+  if (this.clubApp.recordUpdated) {
+    let message = `Welcome to the ${this.clubApp.clubName} .`;
     clubEnrollmentMessage(message);
     clubEnrollmentColor('success');
-    updateClubTableBody(clubApp.clubName);
+    updateClubTableBody(this.clubApp.clubName);
   } else {
-    let message = `Sorry, the ${clubApp.clubName} club is full, please choose another.`;
+    let message = `Sorry, the ${this.clubApp.clubName} club is full, please choose another.`;
     clubEnrollmentMessage(message);
     clubEnrollmentColor('danger');
   }
+  enableSignupBtn();
 }
 
 function clearClubTableHead() {
@@ -136,6 +138,7 @@ function updateClubTableBody(clubName) {
   for (let r = 0; r < clubTableBody.length; r++) {
     for (let c = 1; c < clubTableBody[r].length; c++) {
       let cell = clubTableBody[r][c].innerHTML;
+      console.log(cell);
       if (cell.equals(clubName)) {
         let cellValue = clubTableBody[r][1].innerHTML;
         clubTableBody[r][1].innerHTML = cellValue + 1;

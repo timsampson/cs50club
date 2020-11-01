@@ -101,17 +101,21 @@ function submitClubApplication() {
 }
 
 
-function signUpReponse(updated) {
-  console.log(updated);
-  if (updated) {
-    // let message = `Welcome to the ${this.clubApp.clubName} .`;
-    // clubEnrollmentMessage(message);
-    // clubEnrollmentColor('success');
-    // updateClubTableBody(this.clubApp.clubName);
+function signUpReponse(clubApp) {
+  if (clubApp.clubStatus) {
+    let message = `You are already enrolled in the ${clubApp.clubName} club.`;
+    clubEnrollmentMessage(message);
+    clubEnrollmentColor('danger');
+    updateClubTableBody(clubApp.currentClub);
+  } else if (clubApp.recordUpdated) {
+    let message = `Welcome to the ${clubApp.appliedClub} club.`;
+    clubEnrollmentMessage(message);
+    clubEnrollmentColor('success');
+    updateClubTableBody(clubApp.clubName);
   } else {
-    // let message = `Sorry, the ${this.clubApp.clubName} club is full, please choose another.`;
-    // clubEnrollmentMessage(message);
-    // clubEnrollmentColor('danger');
+    let message = `Sorry, the ${clubApp.appliedClub} club is full, please choose another.`;
+    clubEnrollmentMessage(message);
+    clubEnrollmentColor('danger');
   }
   enableSignupBtn();
 }

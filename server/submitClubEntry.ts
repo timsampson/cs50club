@@ -1,6 +1,7 @@
 let clubApp: {
-    clubName: string;
-    updateDate: Date;
+    clubStatus: boolean;
+    currentClub: string;
+    appliedClub: string;
     stuName: string;
     studentSchool: string;
     stuEmail: string;
@@ -12,7 +13,9 @@ let clubApp: {
 
 function setRecordClubEntry(clubNameEntry: string) {
     let clubApp = {
-        clubName: clubNameEntry,
+        clubStatus: isInClub(),
+        currentClub: getUserClub(),
+        appliedClub: clubNameEntry,
         stuName: getUserName(),
         studentSchool: getSchool(studentValues),
         stuEmail: getEmail(),
@@ -21,18 +24,18 @@ function setRecordClubEntry(clubNameEntry: string) {
         clubModerator: getClubModerator(clubNameEntry),
         recordUpdated: false,
     }
-    if (clubApp.clubHasRoom) {
+    if (clubApp.clubHasRoom && !isInClub()) {
         sendEmailNotice(clubApp);
         clubApp.recordUpdated = true;
         logClubApp(clubApp);
         return clubApp;
     }
     else {
-        //clubApp.recordUpdated = false;
-        return this.clubApp;
+        clubApp.recordUpdated = false;
+        return clubApp;
     }
 }
-function logClubApp(clubApp) {
+function logClubApp(clubApp: { clubStatus?: boolean; currentClub?: string; appliedClub: any; stuName: any; studentSchool: any; stuEmail: any; clubHasRoom: any; clubDetails: any; clubModerator: any; recordUpdated: any; }) {
     let updateTime = new Date();
     clubEnrollmentSheet.appendRow([
         updateTime,
@@ -40,7 +43,7 @@ function logClubApp(clubApp) {
         clubApp.stuName,
         clubApp.studentSchool,
         clubApp.clubModerator,
-        clubApp.clubName,
+        clubApp.appliedClub,
         clubApp.clubHasRoom,
         clubApp.recordUpdated,
         clubApp.clubDetails,

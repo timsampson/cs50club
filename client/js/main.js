@@ -102,10 +102,9 @@ function submitClubApplication() {
 
 }
 
-
 function signUpReponse(clubApp) {
   if (clubApp.clubStatus) {
-    let message = `You are already enrolled in the ${clubApp.clubName} club.`;
+    let message = `You are already enrolled in the ${clubApp.currentClub} club.`;
     clubEnrollmentMessage(message);
     clubEnrollmentColor('danger');
   } else if (clubApp.recordUpdated) {

@@ -24,7 +24,7 @@ function setRecordClubEntry(clubNameEntry: string) {
         clubModerator: getClubModerator(clubNameEntry),
         recordUpdated: false,
     }
-    if (clubApp.clubHasRoom && !isInClub()) {
+    if (clubApp.clubHasRoom && !(isInClub())) {
         sendEmailNotice(clubApp);
         clubApp.recordUpdated = true;
         logClubApp(clubApp);

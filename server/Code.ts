@@ -1,8 +1,11 @@
+function getScriptURL() {
+    return ScriptApp.getService().getUrl();
+}
 function isTeacher() {
     return ((staffValues.findIndex(r => r[1] === getEmail()) > 0));
 }
-function getScriptURL() {
-    return ScriptApp.getService().getUrl();
+function isStudent() {
+    return ((studentValues.findIndex(r => r[1] === getEmail()) > 0));
 }
 function getEmail() {
     return Session.getActiveUser().getEmail();
@@ -21,21 +24,23 @@ function getSchool(values: any[]) {
         return 'No School Assigned';
     }
 }
-
 function getSuPageUIdata() {
     let suPageUIdata = {
         scriptURL: getScriptURL(),
         userName: getUserName(),
         clubNamesBySchool: getClubNamesBySchool(),
         isTeacher: isTeacher(),
+        isStudent: isStudent(),
         isInClub: isInClub(),
         clubMembershipName: getUserClub(),
         clubData: getClubData(),
     }
     return suPageUIdata;
 }
-
 function getUserName() {
+    if (!isTeacher() && !isStudent()) {
+        return 'Not Enrolled';
+    }
     let dataValues = (isTeacher()) ? staffValues : studentValues;
     let firstNameCol = getCol(dataValues, 'first_name');
     let lastNameCol = getCol(dataValues, 'last_name');
@@ -58,18 +63,22 @@ function getUserClub() {
     return message;
 }
 function isInClub() {
+    if (!isTeacher() && !isStudent()) {
+        false;
+    }
     let clubEnrollmentValues = db.getSheetByName("clubrecord").getDataRange().getValues();
     let isEnrolledInclub = (clubEnrollmentValues.findIndex(r => r[1] === getEmail()) > 0);
     return isEnrolledInclub;
 }
-
 function getUpdatedClubValues() {
     return db.getSheetByName("clubs").getDataRange().getValues();
 }
 function getClubData() {
+    if (!isTeacher() && !isStudent()) {
+        return getUpdatedClubValues();
+    }
     return (isTeacher() ? getUpdatedClubValues() : getSchoolClubData(getSchool(studentValues)));
 }
-
 function getSchoolClubData(school: string) {
     clubValues = getUpdatedClubValues();
     let clubHeader = clubValues.splice(0, 1);
@@ -78,6 +87,9 @@ function getSchoolClubData(school: string) {
     return studentClubValues;
 }
 function getClubNamesBySchool() {
+    if (!isTeacher() && !isStudent()) {
+        return [['Not Available']];
+    }
     let clubSchoolData = getSchoolClubData(getSchool(studentValues));
     clubSchoolData.shift();
     if (clubSchoolData.length > 0) {

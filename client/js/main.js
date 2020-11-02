@@ -15,7 +15,7 @@ function updateSignupPageUI(suPageUIdata) {
   showLinks(suPageUIdata.scriptURL);
   showUserName(suPageUIdata.userName);
   showClubOptions(suPageUIdata.clubNamesBySchool);
-  checkEnrollment(suPageUIdata);
+  checkEnrollment(suPageUIdata.isInClub);
   clubTableData = suPageUIdata.clubData;
   showClubTable(clubTableData);
 }
@@ -69,13 +69,20 @@ function clubEnrollmentColor(alertColor) {
     case 'success':
       clubFormStatus.classList.add('alert-success');
       break;
+    case 'danger':
+      clubFormStatus.classList.add('alert-danger');
+      break;
     default:
       clubFormStatus.classList.add('alert-secondary');
   }
 }
 function checkEnrollment(suPageUIdata) {
   // run the alert mesage
-  if (suPageUIdata.isInClub) {
+  if (!suPageUIdata.isTeacher && !suPageUIdata.isstudent) {
+    let message = `Please see the club administrator`;
+    clubEnrollmentMessage(message);
+    clubEnrollmentColor('danger');
+  } else if (suPageUIdata.isInClub) {
     let message = `You are in currently in the the ${suPageUIdata.clubMembershipName} club`;
     clubEnrollmentMessage(message);
     clubEnrollmentColor('primary');

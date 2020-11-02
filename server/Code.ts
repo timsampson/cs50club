@@ -21,12 +21,10 @@ function getSchool(values: any[]) {
         return 'No School Assigned';
     }
 }
-
 function getSuPageUIdata() {
     let suPageUIdata = {
         scriptURL: getScriptURL(),
         userName: getUserName(),
-        clubNamesBySchool: getClubNamesBySchool(),
         isTeacher: isTeacher(),
         isInClub: isInClub(),
         clubMembershipName: getUserClub(),
@@ -34,7 +32,6 @@ function getSuPageUIdata() {
     }
     return suPageUIdata;
 }
-
 function getUserName() {
     let dataValues = (isTeacher()) ? staffValues : studentValues;
     let firstNameCol = getCol(dataValues, 'first_name');
@@ -62,29 +59,16 @@ function isInClub() {
     let isEnrolledInclub = (clubEnrollmentValues.findIndex(r => r[1] === getEmail()) > 0);
     return isEnrolledInclub;
 }
-
 function getUpdatedClubValues() {
     return db.getSheetByName("clubs").getDataRange().getValues();
 }
 function getClubData() {
     return (isTeacher() ? getUpdatedClubValues() : getSchoolClubData(getSchool(studentValues)));
 }
-
 function getSchoolClubData(school: string) {
     clubValues = getUpdatedClubValues();
     let clubHeader = clubValues.splice(0, 1);
     let studentClubValues = clubValues.filter(r => r[6] === school);
     studentClubValues.unshift(clubHeader[0]);
     return studentClubValues;
-}
-function getClubNamesBySchool() {
-    let clubSchoolData = getSchoolClubData(getSchool(studentValues));
-    clubSchoolData.shift();
-    if (clubSchoolData.length > 0) {
-        let clubSchoolList = [];
-        for (let r = 0; r < clubSchoolData.length; r++) {
-            clubSchoolList.push(clubSchoolData[r][1]);
-        }
-        return clubSchoolList;
-    }
 }

@@ -3,21 +3,19 @@ import '../scss/main.scss'
 document.addEventListener('DOMContentLoaded', (event) => {
   // fetchInitial page data for signup page
   google.script.run.withSuccessHandler(updateSignupPageUI).getSuPageUIdata();
-
-
   document
     .getElementById('clubAppBtn')
     .addEventListener('click', submitClubApplication);
 });
-
 let clubTableData;
 function updateSignupPageUI(suPageUIdata) {
   showLinks(suPageUIdata.scriptURL);
   showUserName(suPageUIdata.userName);
-  showClubOptions(suPageUIdata.clubNamesBySchool);
   checkEnrollment(suPageUIdata);
   clubTableData = suPageUIdata.clubData;
   showClubTable(clubTableData);
+  getClubNamesBySchool(clubTableData);
+  //showClubOptions(suPageUIdata.clubNamesBySchool);
 }
 function showLinks(baseURL) {
   document.getElementById('sign-up-link').href = baseURL + '/index';
@@ -25,33 +23,27 @@ function showLinks(baseURL) {
   document.getElementById("sign-up-link").classList.remove("invisible");
   document.getElementById("sign-up-brand").classList.remove("invisible");
 }
-
 function showUserName(userName) {
   let userSchoolNotice = document.getElementById('signedInName');
   userSchoolNotice.innerHTML = userName;
   document.getElementById("signedInName").classList.remove("invisible");
 }
-
 // enable the signup button
 function enableSignupBtn() {
   document.getElementById("clubAppBtn").disabled = false;
 }
-
 // disable the signup button 
 function disableSignupBtn() {
   document.getElementById("clubAppBtn").disabled = true;
 }
-
 function showLoader() {
   document.getElementById("loadingSpinner").classList.remove("invisible");
   document.getElementById("submitBtnLoader").classList.remove("invisible");
 }
-
 function removeLoader() {
   document.getElementById("loadingSpinner").classList.add("invisible");
   document.getElementById("submitBtnLoader").classList.add("invisible");
 }
-
 function clubEnrollmentColor(alertColor) {
   let clubFormStatus = document.getElementById('clubAlertNotice');
   let classList = clubFormStatus.classList;
@@ -89,19 +81,16 @@ function checkEnrollment(suPageUIdata) {
     clubEnrollmentColor('warning');
   }
 }
-
 function clubEnrollmentMessage(message) {
   let clubFormStatus = document.getElementById('clubAlertNotice');
   clubFormStatus.innerHTML = message;
 }
-
 function submitClubApplication() {
   disableSignupBtn();
   let clubName = document.getElementById("clubChoice").value;
   google.script.run.withSuccessHandler(signUpReponse).setRecordClubEntry(clubName);
 
 }
-
 function signUpReponse(clubApp) {
   if (clubApp.clubStatus) {
     let message = `You are already enrolled in the ${clubApp.currentClub} club.`;
@@ -120,12 +109,10 @@ function signUpReponse(clubApp) {
   }
   enableSignupBtn();
 }
-
 function clearClubTableHead() {
   let clubTableHead = document.getElementById('club-table-head');
   clubTableHead.deleteRow(0);
 }
-
 function clearClubTableBody() {
   showLoader();
   let clubTableBody = document.getElementById('club-table-body');
@@ -134,12 +121,11 @@ function clearClubTableBody() {
   }
 }
 function showClubTable(clubResults) {
-  let clubHeader = clubResults.slice(0, 1);
-  showClubTableHeader(clubHeader);
-  showClubTableBody(clubResults, false);
+  showClubTableHeader(clubResults);
+  showClubTableBody(clubResults.slice(1, clubResults.length), false, "");
 }
-
-function showClubTableHeader(tableHeadData) {
+function showClubTableHeader(clubResults) {
+  let tableHeadData = clubResults.slice(0, 1);
   let clubTableHead = document.getElementById('club-table-head');
   for (let r = 0; r < tableHeadData.length; r++) {
     let row = clubTableHead.insertRow();
@@ -151,9 +137,7 @@ function showClubTableHeader(tableHeadData) {
   }
   removeLoader();
 }
-
-function showClubTableBody(clubResults, update, clubName) {
-  let clubBody = clubResults.slice(1, clubResults.length);
+function showClubTableBody(clubBody, update, clubName) {
   let clubTableBody = document.getElementById('club-table-body');
   for (let r = 0; r < clubBody.length; r++) {
     let row = clubTableBody.insertRow();
@@ -174,6 +158,10 @@ function showClubTableBody(clubResults, update, clubName) {
       if (clubBody[r][2] >= clubBody[r][3]) {
         cell.classList.add("table-danger", "border-primary");
       }
+      if (update == true && clubBody[r][c] == clubName) {
+        row.classList.remove("table-danger");
+        row.classList.add("table-success", "border-primary");
+      }
       if (c == 4) {
         cell.classList.add("small");
       }
@@ -182,7 +170,17 @@ function showClubTableBody(clubResults, update, clubName) {
   }
   removeLoader();
 }
-
+function getClubNamesBySchool(clubSchoolData) {
+  // let clubSchoolData = getSchoolClubData(getSchool(studentValues));
+  clubSchoolData.shift();
+  if (clubSchoolData.length > 0) {
+    let clubSchoolList = [];
+    for (let r = 0; r < clubSchoolData.length; r++) {
+      clubSchoolList.push(clubSchoolData[r][1]);
+    }
+    showClubOptions(clubSchoolList);
+  }
+}
 function showClubOptions(optionsList) {
   let clubListOptions = document.getElementById('clubChoice');
   for (let i = 0; i < optionsList.length; i++) {

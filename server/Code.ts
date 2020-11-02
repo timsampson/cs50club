@@ -64,7 +64,10 @@ function getUserClub() {
 }
 function isInClub() {
     if (!isTeacher() && !isStudent()) {
-        false;
+        return false;
+    }
+    else if (isTeacher()) {
+        return false;
     }
     let clubEnrollmentValues = db.getSheetByName("clubrecord").getDataRange().getValues();
     let isEnrolledInclub = (clubEnrollmentValues.findIndex(r => r[1] === getEmail()) > 0);

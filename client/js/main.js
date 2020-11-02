@@ -15,7 +15,7 @@ function updateSignupPageUI(suPageUIdata) {
   showLinks(suPageUIdata.scriptURL);
   showUserName(suPageUIdata.userName);
   showClubOptions(suPageUIdata.clubNamesBySchool);
-  checkEnrollment(suPageUIdata.isInClub);
+  checkEnrollment(suPageUIdata);
   clubTableData = suPageUIdata.clubData;
   showClubTable(clubTableData);
 }

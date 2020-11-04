@@ -14,8 +14,7 @@ function updateSignupPageUI(suPageUIdata) {
   checkEnrollment(suPageUIdata);
   clubTableData = suPageUIdata.clubData;
   showClubTable(clubTableData);
-  getClubNamesBySchool(clubTableData);
-  //showClubOptions(suPageUIdata.clubNamesBySchool);
+  showClubOptions(clubTableData, suPageUIdata.isTeacher);
 }
 function showLinks(baseURL) {
   document.getElementById('sign-up-link').href = baseURL + '/index';
@@ -170,22 +169,25 @@ function showClubTableBody(clubBody, update, clubName) {
   }
   removeLoader();
 }
-function getClubNamesBySchool(clubSchoolData) {
-  // let clubSchoolData = getSchoolClubData(getSchool(studentValues));
-  clubSchoolData.shift();
-  if (clubSchoolData.length > 0) {
-    let clubSchoolList = [];
-    for (let r = 0; r < clubSchoolData.length; r++) {
-      clubSchoolList.push(clubSchoolData[r][1]);
-    }
-    showClubOptions(clubSchoolList);
-  }
-}
-function showClubOptions(optionsList) {
+function showClubOptions(clubSchoolData, isTeacher) {
   let clubListOptions = document.getElementById('clubChoice');
-  for (let i = 0; i < optionsList.length; i++) {
+  if (isTeacher) {
     var option = document.createElement("option");
-    option.text = optionsList[i];
+    option.text = 'See enrollment in the table below';
     clubListOptions.add(option);
+    disableSignupBtn();
+  } else {
+    clubSchoolData.shift();
+    if (clubSchoolData.length > 0) {
+      let clubSchoolList = [];
+      for (let r = 0; r < clubSchoolData.length; r++) {
+        clubSchoolList.push(clubSchoolData[r][1]);
+      }
+      for (let i = 0; i < clubSchoolList.length; i++) {
+        var option = document.createElement("option");
+        option.text = clubSchoolList[i];
+        clubListOptions.add(option);
+      }
+    }
   }
 }

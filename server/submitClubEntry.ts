@@ -10,7 +10,6 @@ let clubApp: {
     clubModerator: string;
     recordUpdated: boolean;
 }
-
 function setRecordClubEntry(clubNameEntry: string) {
     let clubApp = {
         clubStatus: isInClub(),

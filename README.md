@@ -35,7 +35,7 @@ The view is a simple form where the user chooses a club and if the club has room
    - the club name if the student is already in a club
    - a styled success message if the resource is provisioned, if the student joins the club.
    - a styled error message if the club chosen is already full.
-5. If there is a successful enrolment, the student will get an email notification. When the user logs in the app has access to the email property on the user object.
+5. If there is a successful enrolment, the student will get an email notification. When the user logs in the app has access to the email property on the user object. The table row with the updated club will also be styled green.
 
 ### Deployment and Hosting
 
@@ -83,12 +83,19 @@ Once these requirements have been demonstrated in a simple form, making a more c
 
 ## Challenges and Gotchas
 
-- **Display**: having the UI update only after the data has been fetched.  I used `SpreadsheetApp.flush();` to try and ensure that the update had a chance to finish before the UI was updated, but it didn't apear to fix it constently. I found that instead of refreshing the tab values with `.getDataRange().getValues()`, using `getSheetByName` to again fetch the tab and then getting the values would return the updated values. I'm not sure if this is becuase it just took longer and was able to fetch the new values after the cache was updated or always returned the current version. I couldn't find any documentation on the implimentation.
-- **NPM installs**: which package is absolutely needed as a development, project or global install? When jumping around machines during this project, it was a bit of a pain. Once I started spinning up dev containers, it was easy to clarify the needs, as each new container was a clean start, I could minimize the steps and still confirm a successful deploy.
+- **Display**: Having the UI update only after the data has been fetched.  
+
+   - I used `SpreadsheetApp.flush();` to try and ensure that the update had a chance to finish before the UI was updated, but it didn't apear to fix it constently. I found that instead of refreshing the tab values with `.getDataRange().getValues()`, using `getSheetByName` to again fetch the tab and then getting the values would return the updated values. I'm not sure if this is becuase it just took longer and was able to fetch the new values after the cache was updated or always returned the current version. I couldn't find any documentation on the implimentation. 
+
+   - After finishing the first implimentation, I took a different approach and just updated the table on the client side instead of trying to re-fetch it and hope that I hit a new cache instead of a stale cache. 
+
+   - Seeing different components updating a different times depending on when the promisses got returned was inconsistent and was visually distracting. At this point I also realized that having separate function calls to the server is not necessary and instead updated so that there is one call that returns an object with the data needed. Since each call is made with the users account ID, the return can provide the customized info whether the user is a teacher, or a student and whether that student is already in a club or not. 
+
+- **NPM installs**: Which package is absolutely needed as a development, project or global install? When jumping around machines during this project, it was a bit of a pain. Once I started spinning up dev containers, it was easy to clarify the needs, as each new container was a clean start, I could minimize the steps and still confirm a successful deploy.
 - **Node scripts**: When the build worked and I started with a newly cloned project, the build failed as there was no dist folder checked in. Git doesn't like empty folders, so the workaround was creating a new folder on each build. The Node.js docs were actually quite helpful.
 - **Is one page enough?**: I initially had a home page with a special display only for the teacher login along with the signup, but as I worked on the UI, I realized I should narrow down the project and use the time to resolve issues such as the UI updating without having up to date URLS, table contents or the user name.
 - **Mock Data**: Creating enough users and data to model a small school. I used [Mockaroo](https://www.mockaroo.com/) to create enough user information to have 1000 rows with 14 columns of data. Mockaroo's free use option was very helpful in minimizing the time it took to fill up a spreadsheet with mock data.
-- As I wrap up this project, I see there are places to optimize and separate the concerns even more, but.... the app works as expected and I'm happy with this submission.  The intention was to create a working example that I could use as a template for common projects I be working on next year, and I think I've arrived at that point 😊🎂🎉
+- **Is this Complete?** As I wrap up this project, I see there are places to optimize and separate the concerns even more, but the app functions as needed and I'm happy with this submission.  The intention was to create a working example that I could use as a template for common projects I be working on next year, and I think I've arrived at that point 😊🎂🎉
 
 ## References and Related Links
 

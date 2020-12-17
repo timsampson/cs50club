@@ -7,16 +7,15 @@
     "bld": "node clean.js && parcel build client/index.html --no-minify --no-source-maps --no-cache && node util.js && clasp push && node clean.js"
   },
   "devDependencies": {
-    "@types/google-apps-script": "^1.0.20",
-    "@types/node": "^14.14.14",
-    "bootstrap": "^5.0.0-beta1",
+    "@types/google-apps-script": "1.0.20",
+    "@types/node": "14.14.14",
+    "bootstrap": "5.0.0-beta1",
     "node-forge": "^0.10.0",
-    "parcel": "^2.0.0-nightly.481",
-    "parcel-bundler": "^1.12.4",
-    "parcel-plugin-inliner": "^1.0.14",
-    "popper.js": "^1.16.1",
-    "posthtml": "^0.13.4",
-    "sass": "^1.30.0",
+    "parcel": "1.12.4",
+    "parcel-bundler": "1.12.4",
+    "parcel-plugin-inliner": "1.0.14",
+    "posthtml": "0.13.4",
+    "sass": "1.30.0",
     "typescript": "3.8.2"
   },
   "keywords": [
@@ -30,5 +29,8 @@
   "author": "Tim Sampson",
   "license": "MIT",
   "repository": "https://github.com/timsampson/cs50form",
-  "private": "false"
+  "private": "false",
+  "dependencies": {
+    "@popperjs/core": "2.6.0"
+  }
 }

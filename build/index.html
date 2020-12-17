@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <base target="_top">
+  <link rel="stylesheet" href="/index.e8838008.css">
+  <title>Sign Up</title>
+</head>
+
+<body class="d-flex flex-column h-100">
+  <header>
+    <nav id="main-nav" class="navbar navbar-expand-sm navbar navbar-dark bg-primary">
+      <a class="navbar-brand ml-3 invisible" id="sign-up-brand" href="#0">SIS</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link invisible" id="sign-up-link" href="#0">Sign up</a>
+          </li>
+        </ul>
+        <span class="badge rounded-pill bg-light text-dark mr-3 invisible" id="signedInName">login</span>
+      </div>
+    </nav>
+  </header>
+  <main class="flex-shrink-0">
+    <div class="container">
+      <div class="alert alert-dark show" id="clubAlertNotice" role="alert">
+        <strong>Welcome</strong> to the club form page!
+      </div>
+      <div id="loadingSpinner" class="d-flex justify-content-center text-primary">
+        <div class="spinner-grow" role="status">
+          <span class="sr-only"></span>
+        </div>
+      </div>
+      <h1>Signup</h1>
+      <!-- Signup Form -->
+
+      <form>
+        <div class="form-row">
+          <div class="col-3">
+            <select class="form-select" id="clubChoice" aria-label="Choose a club">
+            </select>
+            <small id="clubHelp" class="form-text text-muted">Please choose a club.</small>
+          </div>
+        </div>
+        <div class="mt-3">
+          <button type="button" class="btn btn-primary" id="clubAppBtn">
+            Apply
+          </button>
+          <button class="btn btn-primary" id="submitBtnLoader" type="button" disabled="">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <span class="sr-only"></span>
+          </button>
+        </div>
+
+      </form>
+      <!-- Club list, and current numbers  -->
+      <div>
+        <h3 class="mt-3">Clubs</h3>
+        <table class="table  table-hover table-bordered border-primary table-sm mt-3">
+          <thead id="club-table-head" class="bg-primary text-light text-capitalize font-weight-bold text-center">
+          </thead>
+          <tbody id="club-table-body">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+  <script src="/index.89568a77.js"></script>
+</body>
+
+</html>

@@ -87,9 +87,8 @@ function getSchoolClubData(school: string) {
     let studentClubValues = clubValues.filter(r => r[6] === school);
     studentClubValues.unshift(clubHeader[0]);
     return studentClubValues;
-<<<<<<< HEAD
-=======
 }
+
 function getClubNamesBySchool() {
     if (!isTeacher() && !isStudent()) {
         return [['Not Available']];
@@ -103,5 +102,4 @@ function getClubNamesBySchool() {
         }
         return clubSchoolList;
     }
->>>>>>> dd0aac166cf75e53ee0d2bb3ce5704d8b2aa46db
 }

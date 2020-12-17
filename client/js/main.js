@@ -12,15 +12,13 @@ function updateSignupPageUI(suPageUIdata) {
   showLinks(suPageUIdata.scriptURL);
   showUserName(suPageUIdata.userName);
   checkEnrollment(suPageUIdata);
-  clubTableData = suPageUIdata.clubData;
-  showClubTable(clubTableData);
-  showClubOptions(clubTableData, suPageUIdata.isTeacher);
+  // clubTableData = suPageUIdata.clubData;
+  showClubTable(suPageUIdata.clubData);
+  showClubOptions(suPageUIdata.clubData, suPageUIdata.isTeacher);
 }
 function showLinks(baseURL) {
   document.getElementById('sign-up-link').href = baseURL + '/index';
-  document.getElementById('sign-up-brand').href = baseURL;
   document.getElementById("sign-up-link").classList.remove("invisible");
-  document.getElementById("sign-up-brand").classList.remove("invisible");
 }
 function showUserName(userName) {
   let userSchoolNotice = document.getElementById('signedInName');
@@ -69,7 +67,7 @@ function clubEnrollmentColor(alertColor) {
 }
 function checkEnrollment(suPageUIdata) {
   // run the alert mesage
-  if (!suPageUIdata.isTeacher && !suPageUIdata.isstudent) {
+  if (!suPageUIdata.isTeacher && !suPageUIdata.isStudent) {
     let message = `Please see the club administrator`;
     clubEnrollmentMessage(message);
     clubEnrollmentColor('danger');

@@ -12,9 +12,9 @@ function updateSignupPageUI(suPageUIdata) {
   showLinks(suPageUIdata.scriptURL);
   showUserName(suPageUIdata.userName);
   checkEnrollment(suPageUIdata);
-  // clubTableData = suPageUIdata.clubData;
-  showClubTable(suPageUIdata.clubData);
-  showClubOptions(suPageUIdata.clubData, suPageUIdata.isTeacher);
+  clubTableData = suPageUIdata.clubData;
+  showClubTable(clubTableData);
+  showClubOptions(clubTableData, suPageUIdata.isTeacher);
 }
 function showLinks(baseURL) {
   document.getElementById('sign-up-link').href = baseURL + '/index';

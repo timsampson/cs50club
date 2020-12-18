@@ -1,20 +1,8 @@
-let clubApp: {
-    clubStatus: boolean;
-    currentClub: string;
-    appliedClub: string;
-    stuName: string;
-    studentSchool: string;
-    stuEmail: string;
-    clubHasRoom: boolean;
-    clubDetails: string;
-    clubModerator: string;
-    recordUpdated: boolean;
-}
 function setRecordClubEntry(clubNameEntry: string) {
     let clubApp = {
+        appliedClub: clubNameEntry,
         clubStatus: isInClub(),
         currentClub: getUserClub(),
-        appliedClub: clubNameEntry,
         stuName: getUserName(),
         studentSchool: getSchool(studentValues),
         stuEmail: getEmail(),
@@ -34,7 +22,7 @@ function setRecordClubEntry(clubNameEntry: string) {
         return clubApp;
     }
 }
-function logClubApp(clubApp: { clubStatus?: boolean; currentClub?: string; appliedClub: any; stuName: any; studentSchool: any; stuEmail: any; clubHasRoom: any; clubDetails: any; clubModerator: any; recordUpdated: any; }) {
+function logClubApp(clubApp) {
     let updateTime = new Date();
     clubEnrollmentSheet.appendRow([
         updateTime,

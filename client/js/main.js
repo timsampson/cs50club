@@ -12,7 +12,7 @@ function updateSignupPageUI(suPageUIdata) {
   showLinks(suPageUIdata.scriptURL);
   showUserName(suPageUIdata.userName);
   checkEnrollment(suPageUIdata);
-  clubTableData = suPageUIdata.clubData;
+  clubTableData = suPageUIdata.clubData.slice();
   showClubTable(clubTableData);
   showClubOptions(clubTableData, suPageUIdata.isTeacher);
 }
@@ -113,10 +113,7 @@ function signUpReponse(clubApp) {
   }
   enableSignupBtn();
 }
-function clearClubTableHead() {
-  let clubTableHead = document.getElementById('club-table-head');
-  clubTableHead.deleteRow(0);
-}
+
 function clearClubTableBody() {
   showLoader();
   let clubTableBody = document.getElementById('club-table-body');

@@ -2,7 +2,11 @@
 
 This is the final project for my summer Professional Development, Harvard's CS50 on [Edx.org](https://courses.edx.org/courses/course-v1:HarvardX+CS50+X/course/).
 
-![Gif of Project](https://raw.githubusercontent.com/timsampson/cs50club/main/docs/cs50formDemo.gif)
+<img src="https://raw.githubusercontent.com/timsampson/cs50club/main/docs/cs50formDemo.gif" width="600px" />
+
+[YouTube walk through of project](https://www.youtube.com/watch?v=eE_D4HfREHQ)
+
+[Slides](https://raw.githubusercontent.com/timsampson/cs50club/main/docs/CS50StudentClubSignup.pdf)
 
 ## Description
 
